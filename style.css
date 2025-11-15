@@ -34,7 +34,7 @@ body {
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    flex: 0 0 auto;          /* ⬅️ DO NOT SHRINK */
+    flex: 0 0 auto;          /* lock widths */
 }
 
 /* Column widths */
@@ -46,7 +46,7 @@ body {
 .header-color,    .cell-color    { width: 80px; }
 .header-interior, .cell-interior { width: 80px; }
 .header-year,     .cell-year     { width: 50px; }
-.header-vin,      .cell-vin      { width: 220px; }
+.header-vin,      .cell-vin      { width: 230px; }
 .header-packages, .cell-packages { width: 420px; }
 .header-price,    .cell-price    { width: 120px; }
 .header-dealer,   .cell-dealer   { width: 230px; }
@@ -83,9 +83,9 @@ body {
     align-items: center;
     font-size: 14px;
     line-height: 1;
-    white-space: nowrap;      /* keep things on one line */
+    white-space: nowrap;
     box-sizing: border-box;
-    flex: 0 0 auto;           /* ⬅️ DO NOT SHRINK */
+    flex: 0 0 auto; /* don’t shrink */
 }
 
 /* status circle */
@@ -150,10 +150,17 @@ body {
     margin-left: 4px;
 }
 
-/* VIN and price styling */
+/* VIN & price */
 
 .cell-vin {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    gap: 4px;
+}
+
+.vin-text {
+    background: #f97316;
+    padding: 2px 4px;
+    border-radius: 2px;
 }
 
 .cell-price {
@@ -174,63 +181,3 @@ body {
 
 .cell-dealer a {
     font-size: 12px;
-    color: #0048d2;
-}
-
-/* Tooltip base */
-
-.tooltip {
-    position: relative;
-}
-
-.tooltiptext {
-    display: none;
-    position: absolute;
-    z-index: 20;
-}
-
-/* small black tooltip */
-
-.tooltip-bottom.medium {
-    background: #000;
-    color: #fff;
-    padding: 4px 6px;
-    border-radius: 4px;
-    top: 110%;
-    left: 0;
-    font-size: 12px;
-}
-
-/* show tooltip on hover */
-
-.tooltip:hover .tooltiptext {
-    display: block;
-}
-
-/* big red packages tooltip */
-
-.tooltip-packages-content {
-    background: #b91c1c;
-    color: #fff;
-    padding: 16px 22px;
-    border-radius: 8px;
-    font-size: 15px;
-    line-height: 1.35;
-    top: 110%;
-    left: 0;
-    min-width: 460px;
-    max-width: 520px;
-    box-shadow: 0 8px 18px rgba(0,0,0,0.35);
-}
-
-.tooltip-packages-content div + div {
-    margin-top: 3px;
-}
-
-/* truncate visible packages line */
-
-.packages-short {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
