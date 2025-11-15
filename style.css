@@ -2,13 +2,129 @@
 
 body {
     margin: 0;
-    padding: 16px 0;
+    padding: 0;
     background: #ffffff;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: 13px;
 }
 
-/* Horizontal scroll wrapper */
+.app-shell {
+    width: 100%;
+}
+
+/* ---------- TOP NAV ---------- */
+
+.top-nav {
+    height: 64px;
+    background: #3b3f46;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    box-sizing: border-box;
+}
+
+.top-nav-left,
+.top-nav-center,
+.top-nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.top-nav-left {
+    flex: 1;
+}
+
+.top-nav-center {
+    flex: 2;
+    justify-content: center;
+    gap: 8px;
+    font-size: 16px;
+}
+
+.top-nav-right {
+    flex: 1;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.top-nav-home {
+    font-size: 16px;
+}
+
+.user-icon {
+    font-size: 18px;
+}
+
+.top-nav .divider {
+    opacity: 0.7;
+}
+
+/* ---------- OWNER / TITLE ROW ---------- */
+
+.owner-row {
+    display: flex;
+    align-items: center;
+    padding: 20px 32px 8px;
+    box-sizing: border-box;
+    gap: 16px;
+}
+
+.owner-icon .owner-square {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    border: 4px solid #e11d21;
+    box-sizing: border-box;
+}
+
+.owner-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.owner-main {
+    font-size: 22px;
+}
+
+.owner-sub {
+    font-size: 22px;
+    color: #e11d21;
+}
+
+/* ---------- SUMMARY ROW ---------- */
+
+.summary-row {
+    padding: 8px 32px 8px;
+    border-bottom: 1px solid #e5e7eb;
+    box-sizing: border-box;
+}
+
+.summary-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.summary-checkbox {
+    width: 16px;
+    height: 16px;
+}
+
+.summary-text {
+    font-size: 18px;
+}
+
+.badge-m3 {
+    background: #007bff;
+    color: #ffffff;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* ---------- GRID WRAPPER ---------- */
 
 .grid-wrapper {
     width: 100%;
@@ -16,16 +132,17 @@ body {
 }
 
 .grid-inner {
-    min-width: 1650px; /* full BMW-style width */
+    min-width: 1650px;
 }
 
-/* Header filter row */
+/* ---------- COLUMN LABELS ---------- */
 
-.table-header {
+.column-labels {
     display: flex;
-    align-items: center;
-    background: #eceff1;
-    padding: 4px 8px;
+    align-items: stretch;
+    background: #f3f4f6;
+    padding: 10px 8px 4px;
+    box-sizing: border-box;
     border-bottom: 1px solid #d1d5db;
 }
 
@@ -34,10 +151,13 @@ body {
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    flex: 0 0 auto;          /* lock widths */
+    flex: 0 0 auto;
+    font-weight: 600;
+    color: #4b5563;
+    font-size: 14px;
 }
 
-/* Column widths */
+/* Column widths (labels + data + filters) */
 
 .header-status,   .cell-status   { width: 40px; }
 .header-checkbox, .cell-checkbox { width: 38px; }
@@ -51,7 +171,15 @@ body {
 .header-price,    .cell-price    { width: 120px; }
 .header-dealer,   .cell-dealer   { width: 230px; }
 
-/* Filter inputs */
+/* ---------- FILTER INPUT ROW ---------- */
+
+.table-header {
+    display: flex;
+    align-items: center;
+    background: #eceff1;
+    padding: 4px 8px;
+    border-bottom: 1px solid #d1d5db;
+}
 
 .filter-input {
     width: 100%;
@@ -62,7 +190,7 @@ body {
     height: 26px;
 }
 
-/* Rows */
+/* ---------- DATA ROWS ---------- */
 
 .table-row {
     display: flex;
@@ -85,10 +213,10 @@ body {
     line-height: 1;
     white-space: nowrap;
     box-sizing: border-box;
-    flex: 0 0 auto; /* don’t shrink */
+    flex: 0 0 auto;
 }
 
-/* status circle */
+/* Status circle */
 
 .status-circle {
     width: 24px;
@@ -101,7 +229,7 @@ body {
     font-size: 12px;
 }
 
-/* marketing image + label */
+/* Marketing image */
 
 .marketing-name {
     background-size: contain;
@@ -122,7 +250,7 @@ body {
     line-height: 1.1;
 }
 
-/* color / interior chips */
+/* Color / interior chips */
 
 .color-cell {
     display: flex;
@@ -172,12 +300,4 @@ body {
 
 .cell-dealer {
     flex-direction: column;
-    justify-content: center;
-}
-
-.dealer-name {
-    font-size: 14px;
-}
-
-.cell-dealer a {
-    font-size: 12px;
+    justify
