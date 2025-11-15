@@ -138,13 +138,19 @@ body {
     color: #1a0dab;
 }
 
-/* Tooltip (optional) */
+/* Base tooltip */
 .tooltip {
     position: relative;
 }
+
 .tooltiptext {
     display: none;
     position: absolute;
+    z-index: 20;
+}
+
+/* Default small tooltip (for names, etc.) */
+.tooltip-bottom.medium {
     background: #000;
     color: #fff;
     padding: 4px 6px;
@@ -153,6 +159,34 @@ body {
     left: 0;
     font-size: 11px;
 }
+
+/* Show tooltip on hover */
 .tooltip:hover .tooltiptext {
     display: block;
+}
+
+/* BIG RED PACKAGES TOOLTIP */
+.tooltip-packages-content {
+    background: #b91c1c;          /* red */
+    color: #ffffff;
+    padding: 18px 22px;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.4;
+    top: 115%;
+    left: 0;
+    min-width: 480px;
+    max-width: 520px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+}
+
+.tooltip-packages-content div + div {
+    margin-top: 4px;
+}
+
+/* Keep short packages text inline */
+.packages-short {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
