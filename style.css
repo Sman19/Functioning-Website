@@ -1,184 +1,158 @@
-/* Layout */
-
-.inventory-table {
-  width: 100%;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 13px;
+body {
+    margin: 0;
+    padding: 20px;
+    background: #ffffff;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
+/* Layout container */
+.inventory-table {
+    width: 100%;
+    display: block;
+}
+
+/* Header filter row */
+.table-header {
+    display: flex;
+    align-items: center;
+    background: #e5e7eb;
+    padding: 4px 8px;
+    border-bottom: 1px solid #d1d5db;
+}
+
+.header-cell {
+    padding: 0 6px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* Match BMW layout widths */
+.header-status   { width: 24px; }
+.header-checkbox { width: 40px; }
+.header-marketing{ width: 210px; }
+.header-model    { width: 60px; }
+.header-color    { width: 80px; }
+.header-interior { width: 80px; }
+.header-year     { width: 50px; }
+.header-vin      { width: 200px; }
+.header-packages { width: 240px; }
+.header-price    { width: 100px; }
+.header-dealer   { width: 200px; }
+
+.filter-input {
+    width: 100%;
+    padding: 4px 6px;
+    border-radius: 4px;
+    border: 1px solid #d1d5db;
+    font-size: 12px;
+}
+
+/* Table row */
 .table-row {
-  display: flex;
-  align-items: center;
-  background: #f3f4f6;
-  padding: 6px 8px;
-  margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    background: #f3f4f6;
+    padding: 6px 8px;
+    border-bottom: 1px solid #ddd;
 }
 
 .table-row:nth-child(even) {
-  background: #e5e7eb;
+    background: #eceff1;
 }
 
+/* Cell widths matching header */
 .cell {
-  display: flex;
-  align-items: center;
-  padding: 0 6px;
-  box-sizing: border-box;
+    padding: 0 6px;
+    display: flex;
+    align-items: center;
 }
 
-/* Column widths (roughly matching your snippet) */
-
-.cell-status   { width: 24px;  justify-content: center; }
-.cell-checkbox { width: 40px;  justify-content: center; }
+.cell-status   { width: 24px; }
+.cell-checkbox { width: 40px; }
 .cell-marketing{ width: 210px; }
 .cell-model    { width: 60px; }
-.cell-color,
+.cell-color    { width: 80px; }
 .cell-interior { width: 80px; }
 .cell-year     { width: 50px; }
-.cell-vin      { width: 190px; }
-.cell-packages { width: 220px; }
+.cell-vin      { width: 200px; }
+.cell-packages { width: 240px; }
 .cell-price    { width: 100px; justify-content: flex-end; }
-.cell-dealer   { width: 190px; flex-direction: column; }
+.cell-dealer   { width: 200px; flex-direction: column; }
 
-/* Status */
-
+/* Status circle */
 .status-circle {
-  width: 20px;
-  height: 20px;
-  border-radius: 999px;
-  border: 2px solid #16a34a;
-  color: #16a34a;
-  font-weight: 600;
-  font-size: 11px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    border: 2px solid #16a34a;
+    color: #16a34a;
+    text-align: center;
+    line-height: 18px;
+    font-size: 11px;
 }
 
-/* Marketing name + car thumbnail */
-
+/* Marketing image */
 .marketing-name {
-  position: relative;
-  height: 50px;
-  border-radius: 4px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: left center;
-  padding-left: 64px; /* space for car image */
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left center;
+    height: 50px;
+    padding-left: 64px;
+    display: flex;
+    align-items: center;
 }
 
 .marketing-name span {
-  background: rgba(0, 0, 0, 0.4);
-  color: #fff;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-size: 12px;
+    background: rgba(0,0,0,0.45);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 3px;
 }
 
-/* Model, color, interior */
-
-.color-cell {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
+/* Color swatches */
 .circle {
-  width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  border: 1px solid #ccc;
-  display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    border: 1px solid #ccc;
 }
 
 .square {
-  width: 22px;
-  height: 22px;
-  border-radius: 3px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: inline-block;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    background-size: cover;
+    background-position: center;
 }
 
 .label {
-  font-size: 11px;
-  color: #4b5563;
+    font-size: 11px;
+    color: #444;
+    margin-left: 4px;
 }
 
-/* VIN */
-
-.vin-text {
-  font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 11px;
+/* Dealer link */
+.cell-dealer a {
+    font-size: 11px;
+    color: #1a0dab;
 }
 
-/* Packages */
-
-.packages-short {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Price */
-
-.cell-price {
-  font-weight: 600;
-}
-
-/* Dealer */
-
-.dealer-name {
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
-.original-monroney-section a {
-  font-size: 11px;
-  text-decoration: underline;
-  color: #111827;
-}
-
-/* Tooltips */
-
+/* Tooltip (optional) */
 .tooltip {
-  position: relative;
-  display: inline-block;
+    position: relative;
 }
-
 .tooltiptext {
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  z-index: 10;
-  background-color: #111827;
-  color: #fff;
-  padding: 6px 8px;
-  border-radius: 4px;
-  font-size: 11px;
-  min-width: 160px;
-  max-width: 340px;
-  transition: opacity 0.15s ease;
+    display: none;
+    position: absolute;
+    background: #000;
+    color: #fff;
+    padding: 4px 6px;
+    border-radius: 4px;
+    top: 110%;
+    left: 0;
+    font-size: 11px;
 }
-
-.tooltip-bottom {
-  top: 105%;
-  left: 0;
-}
-
-.left-align {
-  text-align: left;
-}
-
-.medium { }
-.large  { }
-
 .tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
+    display: block;
 }
