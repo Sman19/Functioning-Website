@@ -58,14 +58,14 @@
                 <input type="checkbox">
             </div>
 
-            <!-- Marketing Name (image + text) -->
+            <!-- Marketing Name (image + text, red label on hover) -->
             <div class="cell cell-marketing">
-                <div class="tooltip">
+                <div class="tooltip tooltip-red">
                     <div class="marketing-name"
                          style="background-image: url('https://github.com/Sman19/E90-ext.380x260px/blob/88d5599e9c5abc6da52cfffe7488fc47056127ac/Alpine%20White%20-%20E90%20.png?raw=true');">
                         <span>M3 Sedan (TOTAL LOSS)</span>
                     </div>
-                    <div class="tooltiptext tooltip-bottom medium">
+                    <div class="tooltiptext tooltip-red-content">
                         M3 Sedan (TOTAL LOSS)
                     </div>
                 </div>
@@ -76,32 +76,48 @@
                 E90
             </div>
 
-            <!-- Exterior -->
+            <!-- Exterior (circle + code, red label "Alpine White" on hover) -->
             <div class="cell cell-color">
-                <div class="color-cell">
-                    <span class="circle" style="background-color:#ffffff;"></span>
-                    <div class="label">300</div>
+                <div class="tooltip tooltip-red">
+                    <div class="color-cell">
+                        <span class="circle" style="background-color:#ffffff;"></span>
+                        <div class="label">300</div>
+                    </div>
+                    <div class="tooltiptext tooltip-red-content">
+                        Alpine White
+                    </div>
                 </div>
             </div>
 
-            <!-- Interior -->
+            <!-- Interior (square + code, red label "Beige Novillo Leather" on hover) -->
             <div class="cell cell-interior">
-                <div class="color-cell">
-                    <span class="square"
-                          style="background-image:url('https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Bamboo%20Beige%20Novillo%20Leather.png');"></span>
-                    <div class="label">NCH3</div>
+                <div class="tooltip tooltip-red">
+                    <div class="color-cell">
+                        <span class="square"
+                              style="background-image:url('https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Bamboo%20Beige%20Novillo%20Leather.png');"></span>
+                        <div class="label">NCH3</div>
+                    </div>
+                    <div class="tooltiptext tooltip-red-content">
+                        Beige Novillo Leather
+                    </div>
                 </div>
             </div>
 
             <!-- Year -->
             <div class="cell cell-year">2011</div>
 
-            <!-- VIN -->
+            <!-- VIN (orange highlight + red label description + copy button) -->
             <div class="cell cell-vin">
-                WBSPM9C55BE698960
+                <div class="tooltip tooltip-red">
+                    <span class="vin-text" id="vin-1">WBSPM9C55BE698960</span>
+                    <div class="tooltiptext tooltip-red-content">
+                        M3 Sedan 4.0L 8-Cylinder 7-Speed DCT
+                    </div>
+                </div>
+                <button class="copy-btn" data-copy-target="vin-1" title="Copy VIN">⧉</button>
             </div>
 
-            <!-- Packages (with red popup on hover) -->
+            <!-- Packages (with big red popup on hover) -->
             <div class="cell cell-packages">
                 <div class="tooltip tooltip-packages">
                     <span class="packages-short">
@@ -146,7 +162,7 @@
 </div> <!-- /grid-wrapper -->
 
 
-<!-- FILTERING SCRIPT -->
+<!-- FILTERING + COPY SCRIPT -->
 <script>
 (function () {
     const fieldSelectors = {
@@ -192,13 +208,46 @@
         });
     }
 
+    // Run filters when user presses Enter
     document.querySelectorAll('.filter-input').forEach(input => {
         input.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') applyFilters();
         });
     });
+
+    // Copy buttons (VIN)
+    function copyText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            return navigator.clipboard.writeText(text);
+        } else {
+            // Fallback for older browsers
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            return Promise.resolve();
+        }
+    }
+
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.dataset.copyTarget;
+            const el = document.getElementById(id);
+            if (!el) return;
+
+            const text = el.textContent.trim();
+            copyText(text).then(() => {
+                btn.classList.add('copied');
+                setTimeout(() => btn.classList.remove('copied'), 700);
+            });
+        });
+    });
+
 })();
 </script>
 
 </body>
 </html>
+
