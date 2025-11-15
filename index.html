@@ -3,163 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>index.html</title>
+    <title>E9X M3 Inventory</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="grid-wrapper">
-    <div class="grid-inner">
+<div class="app-shell">
 
-        <!-- FILTER HEADER ROW -->
-        <div class="table-header">
-            <div class="header-cell header-status"></div>
-            <div class="header-cell header-checkbox"></div>
-            <div class="header-cell header-marketing">
-                <input class="filter-input" data-field="marketing" placeholder="Model Name">
-            </div>
-            <div class="header-cell header-model">
-                <input class="filter-input" data-field="model" placeholder="Model">
-            </div>
-            <div class="header-cell header-color">
-                <input class="filter-input" data-field="color" placeholder="Ext. Code">
-            </div>
-            <div class="header-cell header-interior">
-                <input class="filter-input" data-field="interior" placeholder="Int. Code">
-            </div>
-            <div class="header-cell header-year">
-                <input class="filter-input" data-field="year" placeholder="Yr">
-            </div>
-            <div class="header-cell header-vin">
-                <input class="filter-input" data-field="vin" placeholder="VIN">
-            </div>
-            <div class="header-cell header-packages">
-                <input class="filter-input" data-field="packages" placeholder="Packages">
-            </div>
-            <div class="header-cell header-price">
-                <input class="filter-input" data-field="price" placeholder="Price">
-            </div>
-            <div class="header-cell header-dealer">
-                <input class="filter-input" data-field="dealer" placeholder="Dealer">
-            </div>
+    <!-- TOP DARK NAV BAR -->
+    <header class="top-nav">
+        <div class="top-nav-left">
+            <span class="top-nav-home">Home</span>
         </div>
-
-        <!-- ROW 1 : WBSPM9C55BE698960 -->
-        <div class="table-row">
-
-            <!-- Status -->
-            <div class="cell cell-status">
-                <div class="status-circle">G</div>
-            </div>
-
-            <!-- Checkbox -->
-            <div class="cell cell-checkbox">
-                <input type="checkbox">
-            </div>
-
-            <!-- Marketing Name (image + text, red label on hover) -->
-            <div class="cell cell-marketing">
-                <div class="tooltip tooltip-red">
-                    <div class="marketing-name"
-                         style="background-image: url('https://github.com/Sman19/E90-ext.380x260px/blob/88d5599e9c5abc6da52cfffe7488fc47056127ac/Alpine%20White%20-%20E90%20.png?raw=true');">
-                        <span>M3 Sedan (TOTAL LOSS)</span>
-                    </div>
-                    <div class="tooltiptext tooltip-red-content">
-                        M3 Sedan (TOTAL LOSS)
-                    </div>
-                </div>
-            </div>
-
-            <!-- Model -->
-            <div class="cell cell-model">
-                E90
-            </div>
-
-            <!-- Exterior (circle + code, red label "Alpine White" on hover) -->
-            <div class="cell cell-color">
-                <div class="tooltip tooltip-red">
-                    <div class="color-cell">
-                        <span class="circle" style="background-color:#ffffff;"></span>
-                        <div class="label">300</div>
-                    </div>
-                    <div class="tooltiptext tooltip-red-content">
-                        Alpine White
-                    </div>
-                </div>
-            </div>
-
-            <!-- Interior (square + code, red label "Beige Novillo Leather" on hover) -->
-            <div class="cell cell-interior">
-                <div class="tooltip tooltip-red">
-                    <div class="color-cell">
-                        <span class="square"
-                              style="background-image:url('https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Bamboo%20Beige%20Novillo%20Leather.png');"></span>
-                        <div class="label">NCH3</div>
-                    </div>
-                    <div class="tooltiptext tooltip-red-content">
-                        Beige Novillo Leather
-                    </div>
-                </div>
-            </div>
-
-            <!-- Year -->
-            <div class="cell cell-year">2011</div>
-
-            <!-- VIN (orange highlight + red label description + copy button) -->
-            <div class="cell cell-vin">
-                <div class="tooltip tooltip-red">
-                    <span class="vin-text" id="vin-1">WBSPM9C55BE698960</span>
-                    <div class="tooltiptext tooltip-red-content">
-                        M3 Sedan 4.0L 8-Cylinder 7-Speed DCT
-                    </div>
-                </div>
-                <button class="copy-btn" data-copy-target="vin-1" title="Copy VIN">⧉</button>
-            </div>
-
-            <!-- Packages (with big red popup on hover) -->
-            <div class="cell cell-packages">
-                <div class="tooltip tooltip-packages">
-                    <span class="packages-short">
-                        ZCP ZP2 2MK 403 465 494 609 655 6FL 6NR 752
-                    </span>
-
-                    <div class="tooltiptext tooltip-packages-content">
-                        <div>MSRP - $55,900.00</div>
-                        <div>ZCP - Competition Package - $2,500.00</div>
-                        <div>ZP2 - Premium Package 2 - $2,500.00 | 4MY - Carbon Leather Interior Trim</div>
-                        <div>2MK - M Double-Clutch Transmission - $2,900.00</div>
-                        <div>403 - Moonroof - $1,050.00</div>
-                        <div>465 - Split-Fold Down Rear Seat - $475.00</div>
-                        <div>494 - Heated Front Seats - $500.00</div>
-                        <div>609 - Navigation System - $2,150.00</div>
-                        <div>655 - Satellite Radio - $350.00</div>
-                        <div>6FL - iPod &amp; USB Adapter - $400.00</div>
-                        <div>6NR - BMW Apps - $250.00</div>
-                        <div>752 - Enhanced Premium Sound - $1,900.00</div>
-                        <div>DC - Destination Charge - $875.00</div>
-                        <div>GZ - Gas Guzzler Tax - $1,300.00</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Price -->
-            <div class="cell cell-price">
-                73,050.00
-            </div>
-
-            <!-- Dealer -->
-            <div class="cell cell-dealer">
-                <span class="dealer-name">GLOBAL IMPORTS BMW</span>
-                <a href="https://raw.githubusercontent.com/Sman19/OriginalMonroney/" target="_blank">
-                    Original Monroney
-                </a>
-            </div>
+        <div class="top-nav-center">
+            <span>E9x M3 U.S</span>
+            <span class="divider">|</span>
+            <span>U.S Database - 00001</span>
         </div>
-        <!-- END ROW 1 -->
+        <div class="top-nav-right">
+            <span>Public User</span>
+            <span class="user-icon">👤</span>
+        </div>
+    </header>
 
-    </div> <!-- /grid-inner -->
-</div> <!-- /grid-wrapper -->
+    <!-- OWNER IMAGES / TITLE ROW -->
+    <div class="owner-row">
+        <div class="owner-icon">
+            <span class="owner-square"></span>
+        </div>
+        <div class="owner-labels">
+            <span class="owner-main">Owner images</span>
+            <span class="owner-sub">E9x M3 Inventory</span>
+        </div>
+    </div>
+
+    <!-- COUNT / FILTER SUMMARY ROW -->
+    <div class="summary-row">
+        <div class="summary-left">
+            <input type="checkbox" class="summary-checkbox">
+            <span class="summary-text">351 of 25,672 Vehicle(s)</span>
+            <span class="badge-m3">M3</span>
+        </div>
+    </div>
+
+    <!-- GRID WRAPPER -->
+    <div class="grid-wrapper">
+        <div class="grid-inner">
+
+            <!-- COLUMN LABEL ROW (Cat / Model / Ext / ... ) -->
+            <div class="column-labels">
+                <div class="header-cell header-status">Cat.</div>
+                <div class="header-cell header-checkbox"></div>
+                <div class="header-cell header-marketing">Model Name</div>
+                <div class="header-cell header-model">Model</div>
+                <div class="header-cell header-color">Ext.</div>
+                <div class="header-cell header-interior">Int.</div>
+                <div class="header-cell header-year">Yr.</div>
+                <div class="header-cell header-vin">VIN</div>
+                <div class="header-cell header-packages">
+                    Accessories (Individual Paint<br>
+                    Charge - $5,000*)
+                </div>
+                <div class="header-cell header-price">
+                    MSRP (Includes<br>
+                    Gas Guzzler<br>
+                    and Destination<br>
+                    Charges)
+                </div>
+                <div class="header-cell header-dealer">
+                    Dealer Name (PC -<br>
+                    Center | E.D - Euro<br>
+                    Military)
+                </div>
+            </div>
+
+            <!-- FILTER INPUT ROW (under labels) -->
+            <div class="table-header">
+                <div class="header-cell header-status"></div>
+                <div class="header-cell header-checkbox"></div>
+                <div class="header-cell header-marketing">
+                    <input class="filter-input" data-field="marketing" placeholder="">
+                </div>
+                <div class="header-cell header-model">
+                    <input class="filter-input" data-field="model" placeholder="">
+                </div>
+                <div class="header-cell header-color">
+                    <input class="filter-input" data-field="color" placeholder="">
+                </div>
+                <div class="header-cell header-interior">
+                    <input class="filter-input" data-field="interior" placeholder="">
+                </div>
+                <div class="header-cell header-year">
+                    <input class="filter-input" data-field="year" placeholder="">
+                </div>
+                <div class="header-cell header-vin">
+                    <input class="filter-input" data-field="vin" placeholder="">
+                </div>
+                <div class="header-cell header-packages">
+                    <input class="filter-input" data-field="packages" placeholder="">
+                </div>
+                <div class="header-cell header-price">
+                    <input class="filter-input" data-field="price" placeholder="">
+                </div>
+                <div class="header-cell header-dealer">
+                    <input class="filter-input" data-field="dealer" placeholder="">
+                </div>
+            </div>
+
+            <!-- ROW 1 : WBSPM9C55BE698960 -->
+            <div class="table-row">
+
+                <!-- Status -->
+                <div class="cell cell-status">
+                    <div class="status-circle">G</div>
+                </div>
+
+                <!-- Checkbox -->
+                <div class="cell cell-checkbox">
+                    <input type="checkbox">
+                </div>
+
+                <!-- Marketing Name (image + text, red label on hover) -->
+                <div class="cell cell-marketing">
+                    <div class="tooltip tooltip-red">
+                        <div class="marketing-name"
+                             style="background-image: url('https://github.com/Sman19/E90-ext.380x260px/blob/88d5599e9c5abc6da52cfffe7488fc47056127ac/Alpine%20White%20-%20E90%20.png?raw=true');">
+                            <span>M3 Sedan (TOTAL LOSS)</span>
+                        </div>
+                        <div class="tooltiptext tooltip-red-content">
+                            M3 Sedan (TOTAL LOSS)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Model -->
+                <div class="cell cell-model">
+                    E90
+                </div>
+
+                <!-- Exterior (circle + code, red label on hover) -->
+                <div class="cell cell-color">
+                    <div class="tooltip tooltip-red">
+                        <div class="color-cell">
+                            <span class="circle" style="background-color:#ffffff;"></span>
+                            <div class="label">300</div>
+                        </div>
+                        <div class="tooltiptext tooltip-red-content">
+                            Alpine White
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interior (square + code, red label on hover) -->
+                <div class="cell cell-interior">
+                    <div class="tooltip tooltip-red">
+                        <div class="color-cell">
+                            <span class="square"
+                                  style="background-image:url('https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Bamboo%20Beige%20Novillo%20Leather.png');"></span>
+                            <div class="label">NCH3</div>
+                        </div>
+                        <div class="tooltiptext tooltip-red-content">
+                            Beige Novillo Leather
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Year -->
+                <div class="cell cell-year">2011</div>
+
+                <!-- VIN (orange highlight + red label description + copy button) -->
+                <div class="cell cell-vin">
+                    <div class="tooltip tooltip-red">
+                        <span class="vin-text" id="vin-1">WBSPM9C55BE698960</span>
+                        <div class="tooltiptext tooltip-red-content">
+                            M3 Sedan 4.0L 8-Cylinder 7-Speed DCT
+                        </div>
+                    </div>
+                    <button class="copy-btn" data-copy-target="vin-1" title="Copy VIN">⧉</button>
+                </div>
+
+                <!-- Packages (big red popup) -->
+                <div class="cell cell-packages">
+                    <div class="tooltip tooltip-packages">
+                        <span class="packages-short">
+                            ZCP ZP2 2MK 403 465 494 609 655 6FL 6NR 752
+                        </span>
+
+                        <div class="tooltiptext tooltip-packages-content">
+                            <div>MSRP - $55,900.00</div>
+                            <div>ZCP - Competition Package - $2,500.00</div>
+                            <div>ZP2 - Premium Package 2 - $2,500.00 | 4MY - Carbon Leather Interior Trim</div>
+                            <div>2MK - M Double-Clutch Transmission - $2,900.00</div>
+                            <div>403 - Moonroof - $1,050.00</div>
+                            <div>465 - Split-Fold Down Rear Seat - $475.00</div>
+                            <div>494 - Heated Front Seats - $500.00</div>
+                            <div>609 - Navigation System - $2,150.00</div>
+                            <div>655 - Satellite Radio - $350.00</div>
+                            <div>6FL - iPod &amp; USB Adapter - $400.00</div>
+                            <div>6NR - BMW Apps - $250.00</div>
+                            <div>752 - Enhanced Premium Sound - $1,900.00</div>
+                            <div>DC - Destination Charge - $875.00</div>
+                            <div>GZ - Gas Guzzler Tax - $1,300.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price -->
+                <div class="cell cell-price">
+                    73,050.00
+                </div>
+
+                <!-- Dealer -->
+                <div class="cell cell-dealer">
+                    <span class="dealer-name">GLOBAL IMPORTS BMW</span>
+                    <a href="https://raw.githubusercontent.com/Sman19/OriginalMonroney/" target="_blank">
+                        Original Monroney
+                    </a>
+                </div>
+            </div>
+            <!-- END ROW 1 -->
+
+        </div> <!-- /grid-inner -->
+    </div> <!-- /grid-wrapper -->
+
+</div> <!-- /app-shell -->
 
 
 <!-- FILTERING + COPY SCRIPT -->
@@ -220,7 +288,6 @@
         if (navigator.clipboard && navigator.clipboard.writeText) {
             return navigator.clipboard.writeText(text);
         } else {
-            // Fallback for older browsers
             const temp = document.createElement('textarea');
             temp.value = text;
             document.body.appendChild(temp);
@@ -250,4 +317,3 @@
 
 </body>
 </html>
-
