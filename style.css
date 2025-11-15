@@ -300,4 +300,96 @@ body {
 
 .cell-dealer {
     flex-direction: column;
-    justify
+    justify-content: center;
+}
+
+/* Dealer link */
+
+.dealer-name {
+    font-size: 14px;
+}
+
+.cell-dealer a {
+    font-size: 12px;
+    color: #0048d2;
+}
+
+/* Copy button */
+
+.copy-btn {
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
+    border-radius: 4px;
+    font-size: 11px;
+    padding: 2px 5px;
+    cursor: pointer;
+}
+
+.copy-btn:hover {
+    background: #e5e7eb;
+}
+
+.copy-btn.copied {
+    background: #16a34a;
+    border-color: #16a34a;
+    color: #fff;
+}
+
+/* ---------- TOOLTIP BASE ---------- */
+
+.tooltip {
+    position: relative;
+}
+
+.tooltiptext {
+    display: none;          /* ⬅️ hides tooltip content until hover */
+    position: absolute;
+    z-index: 20;
+}
+
+.tooltip:hover .tooltiptext {
+    display: block;
+}
+
+/* Red label tooltips (model/ext/int/VIN) */
+
+.tooltip-red-content {
+    background: #b91c1c;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    line-height: 1.35;
+    top: 110%;
+    left: 0;
+    white-space: nowrap;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+}
+
+/* Big red packages tooltip */
+
+.tooltip-packages-content {
+    background: #b91c1c;
+    color: #fff;
+    padding: 16px 22px;
+    border-radius: 8px;
+    font-size: 15px;
+    line-height: 1.35;
+    top: 110%;
+    left: 0;
+    min-width: 460px;
+    max-width: 520px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+}
+
+.tooltip-packages-content div + div {
+    margin-top: 3px;
+}
+
+/* Truncate visible packages line */
+
+.packages-short {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
