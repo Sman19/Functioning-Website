@@ -11,7 +11,7 @@
 
 <div class="app-shell">
 
-    <!-- TOP DARK NAV BAR -->
+    <!-- TOP NAV BAR -->
     <header class="top-nav">
         <div class="top-nav-left">
             <span class="top-nav-home">Home</span>
@@ -27,18 +27,16 @@
         </div>
     </header>
 
-    <!-- OWNER IMAGES / TITLE ROW -->
+    <!-- OWNER / INVENTORY HEADER -->
     <div class="owner-row">
-        <div class="owner-icon">
-            <span class="owner-square"></span>
-        </div>
+        <div class="owner-pill"></div>
         <div class="owner-labels">
             <span class="owner-main">Owner images</span>
             <span class="owner-sub">E9x M3 Inventory</span>
         </div>
     </div>
 
-    <!-- COUNT / FILTER SUMMARY ROW -->
+    <!-- SUMMARY ROW -->
     <div class="summary-row">
         <div class="summary-left">
             <input type="checkbox" class="summary-checkbox">
@@ -47,11 +45,11 @@
         </div>
     </div>
 
-    <!-- GRID WRAPPER -->
+    <!-- GRID -->
     <div class="grid-wrapper">
         <div class="grid-inner">
 
-            <!-- COLUMN LABEL ROW (Cat / Model / Ext / ... ) -->
+            <!-- COLUMN LABELS (A) -->
             <div class="column-labels">
                 <div class="header-cell header-status">Cat.</div>
                 <div class="header-cell header-checkbox"></div>
@@ -78,7 +76,7 @@
                 </div>
             </div>
 
-            <!-- FILTER INPUT ROW (under labels) -->
+            <!-- FILTER INPUT ROW (B) -->
             <div class="table-header">
                 <div class="header-cell header-status"></div>
                 <div class="header-cell header-checkbox"></div>
@@ -111,10 +109,10 @@
                 </div>
             </div>
 
-            <!-- ROW 1 : WBSPM9C55BE698960 -->
+            <!-- DATA ROW -->
             <div class="table-row">
 
-                <!-- Status -->
+                <!-- Cat / status -->
                 <div class="cell cell-status">
                     <div class="status-circle">G</div>
                 </div>
@@ -124,11 +122,11 @@
                     <input type="checkbox">
                 </div>
 
-                <!-- Marketing Name (image + text, red label on hover) -->
+                <!-- Model name + thumbnail -->
                 <div class="cell cell-marketing">
-                    <div class="tooltip tooltip-red">
+                    <div class="tooltip">
                         <div class="marketing-name"
-                             style="background-image: url('https://github.com/Sman19/E90-ext.380x260px/blob/88d5599e9c5abc6da52cfffe7488fc47056127ac/Alpine%20White%20-%20E90%20.png?raw=true');">
+                             style="background-image:url('https://github.com/Sman19/E90-ext.380x260px/blob/88d5599e9c5abc6da52cfffe7488fc47056127ac/Alpine%20White%20-%20E90%20.png?raw=true');">
                             <span>M3 Sedan (TOTAL LOSS)</span>
                         </div>
                         <div class="tooltiptext tooltip-red-content">
@@ -137,14 +135,14 @@
                     </div>
                 </div>
 
-                <!-- Model -->
+                <!-- Model code -->
                 <div class="cell cell-model">
                     E90
                 </div>
 
-                <!-- Exterior (circle + code, red label on hover) -->
+                <!-- Exterior color -->
                 <div class="cell cell-color">
-                    <div class="tooltip tooltip-red">
+                    <div class="tooltip">
                         <div class="color-cell">
                             <span class="circle" style="background-color:#ffffff;"></span>
                             <div class="label">300</div>
@@ -155,9 +153,9 @@
                     </div>
                 </div>
 
-                <!-- Interior (square + code, red label on hover) -->
+                <!-- Interior color -->
                 <div class="cell cell-interior">
-                    <div class="tooltip tooltip-red">
+                    <div class="tooltip">
                         <div class="color-cell">
                             <span class="square"
                                   style="background-image:url('https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Bamboo%20Beige%20Novillo%20Leather.png');"></span>
@@ -170,11 +168,13 @@
                 </div>
 
                 <!-- Year -->
-                <div class="cell cell-year">2011</div>
+                <div class="cell cell-year">
+                    2011
+                </div>
 
-                <!-- VIN (orange highlight + red label description + copy button) -->
+                <!-- VIN + copy button -->
                 <div class="cell cell-vin">
-                    <div class="tooltip tooltip-red">
+                    <div class="tooltip">
                         <span class="vin-text" id="vin-1">WBSPM9C55BE698960</span>
                         <div class="tooltiptext tooltip-red-content">
                             M3 Sedan 4.0L 8-Cylinder 7-Speed DCT
@@ -183,13 +183,12 @@
                     <button class="copy-btn" data-copy-target="vin-1" title="Copy VIN">⧉</button>
                 </div>
 
-                <!-- Packages (big red popup) -->
+                <!-- Packages -->
                 <div class="cell cell-packages">
                     <div class="tooltip tooltip-packages">
                         <span class="packages-short">
                             ZCP ZP2 2MK 403 465 494 609 655 6FL 6NR 752
                         </span>
-
                         <div class="tooltiptext tooltip-packages-content">
                             <div>MSRP - $55,900.00</div>
                             <div>ZCP - Competition Package - $2,500.00</div>
@@ -222,15 +221,13 @@
                     </a>
                 </div>
             </div>
-            <!-- END ROW 1 -->
+            <!-- END DATA ROW -->
 
-        </div> <!-- /grid-inner -->
-    </div> <!-- /grid-wrapper -->
+        </div>
+    </div>
+</div>
 
-</div> <!-- /app-shell -->
-
-
-<!-- FILTERING + COPY SCRIPT -->
+<!-- FILTER + COPY SCRIPT -->
 <script>
 (function () {
     const fieldSelectors = {
@@ -256,34 +253,36 @@
         const filters = {};
         inputs.forEach(input => {
             const field = input.dataset.field;
-            const value = normalize(input.value);
+            const value = normalize(input.value || "");
             if (value) filters[field] = value;
         });
 
         rows.forEach(row => {
-            let show = true;
+            let visible = true;
 
             for (const field in filters) {
                 const cell = row.querySelector(fieldSelectors[field]);
                 const cellText = cell ? normalize(cell.innerText) : "";
                 if (!cellText.includes(filters[field])) {
-                    show = false;
+                    visible = false;
                     break;
                 }
             }
 
-            row.style.display = show ? 'flex' : 'none';
+            row.style.display = visible ? 'flex' : 'none';
         });
     }
 
-    // Run filters when user presses Enter
+    // Run filters on Enter
     document.querySelectorAll('.filter-input').forEach(input => {
         input.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') applyFilters();
+            if (e.key === 'Enter') {
+                applyFilters();
+            }
         });
     });
 
-    // Copy buttons (VIN)
+    // Copy VIN buttons
     function copyText(text) {
         if (navigator.clipboard && navigator.clipboard.writeText) {
             return navigator.clipboard.writeText(text);
@@ -303,7 +302,6 @@
             const id = btn.dataset.copyTarget;
             const el = document.getElementById(id);
             if (!el) return;
-
             const text = el.textContent.trim();
             copyText(text).then(() => {
                 btn.classList.add('copied');
@@ -311,7 +309,6 @@
             });
         });
     });
-
 })();
 </script>
 
