@@ -134,7 +134,7 @@ body {
     min-width: 1700px;
 }
 
-/* ---------- COLUMN LABELS (A) ---------- */
+/* ---------- COLUMN LABELS ---------- */
 
 .column-labels {
     display: flex;
@@ -156,7 +156,7 @@ body {
     font-size: 14px;
 }
 
-/* Column widths (same for headers, filters, and cells) */
+/* Column widths */
 
 .header-status,   .cell-status   { width: 40px; }
 .header-checkbox, .cell-checkbox { width: 38px; }
@@ -170,7 +170,7 @@ body {
 .header-price,    .cell-price    { width: 120px; }
 .header-dealer,   .cell-dealer   { width: 230px; }
 
-/* ---------- FILTER ROW (B) ---------- */
+/* ---------- FILTER ROW ---------- */
 
 .table-header {
     display: flex;
@@ -228,14 +228,14 @@ body {
     font-size: 12px;
 }
 
-/* Marketing image */
+/* Marketing image + text spacing */
 
 .marketing-name {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: left center;
     height: 46px;
-    padding-left: 64px;
+    padding-left: 100px;  /* more separation between car and text */
     display: flex;
     align-items: center;
 }
@@ -339,7 +339,7 @@ body {
 }
 
 .tooltiptext {
-    display: none;          /* hidden until hover */
+    display: none;
     position: absolute;
     z-index: 20;
 }
