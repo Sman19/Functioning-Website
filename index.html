@@ -11,10 +11,43 @@
 
 <div class="inventory-table">
 
-    <!-- ROW -->
+    <!-- FILTER HEADER ROW -->
+    <div class="table-header">
+        <div class="header-cell header-status"></div>
+        <div class="header-cell header-checkbox"></div>
+        <div class="header-cell header-marketing">
+            <input class="filter-input" data-field="marketing" placeholder="Model Name">
+        </div>
+        <div class="header-cell header-model">
+            <input class="filter-input" data-field="model" placeholder="Model Code">
+        </div>
+        <div class="header-cell header-color">
+            <input class="filter-input" data-field="color" placeholder="Ext. Code">
+        </div>
+        <div class="header-cell header-interior">
+            <input class="filter-input" data-field="interior" placeholder="Int. Code">
+        </div>
+        <div class="header-cell header-year">
+            <input class="filter-input" data-field="year" placeholder="Yr">
+        </div>
+        <div class="header-cell header-vin">
+            <input class="filter-input" data-field="vin" placeholder="VIN">
+        </div>
+        <div class="header-cell header-packages">
+            <input class="filter-input" data-field="packages" placeholder="Packages">
+        </div>
+        <div class="header-cell header-price">
+            <input class="filter-input" data-field="price" placeholder="Price">
+        </div>
+        <div class="header-cell header-dealer">
+            <input class="filter-input" data-field="dealer" placeholder="Dealer">
+        </div>
+    </div>
+
+    <!-- ROW 1 -->
     <div class="table-row">
 
-        <!-- Status / ground code -->
+        <!-- Status -->
         <div class="cell cell-status">
             <div class="status-circle">G</div>
         </div>
@@ -24,7 +57,7 @@
             <input type="checkbox">
         </div>
 
-        <!-- Marketing name -->
+        <!-- Marketing Name -->
         <div class="cell cell-marketing">
             <div class="tooltip">
                 <div class="marketing-name"
@@ -35,33 +68,24 @@
             </div>
         </div>
 
-        <!-- Model code -->
+        <!-- Model -->
         <div class="cell cell-model">
-            <div class="tooltip">
-                <span>E90</span>
-                <div class="tooltiptext tooltip-bottom medium">M3 Sedan 4.0L V8 DCT</div>
-            </div>
+            <span>E90</span>
         </div>
 
         <!-- Exterior -->
         <div class="cell cell-color">
-            <div class="tooltip">
-                <div class="color-cell">
-                    <span class="circle" style="background-color:#ffffff;"></span>
-                    <div class="label">300</div>
-                </div>
-                <div class="tooltiptext medium">Alpine White</div>
+            <div class="color-cell">
+                <span class="circle" style="background-color:#ffffff;"></span>
+                <div class="label">300</div>
             </div>
         </div>
 
         <!-- Interior -->
         <div class="cell cell-interior">
-            <div class="tooltip">
-                <div class="color-cell">
-                    <span class="square" style="background-image: url('https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Bamboo%20Beige%20Novillo%20Leather.png');"></span>
-                    <div class="label">NCH3</div>
-                </div>
-                <div class="tooltiptext medium">Beige Novillo Leather</div>
+            <div class="color-cell">
+                <span class="square" style="background-image:url('https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Bamboo%20Beige%20Novillo%20Leather.png');"></span>
+                <div class="label">NCH3</div>
             </div>
         </div>
 
@@ -70,10 +94,7 @@
 
         <!-- VIN -->
         <div class="cell cell-vin">
-            <div class="tooltip">
-                <span class="vin-text">WBSPM9C55BE698960</span>
-                <div class="tooltiptext medium">WBSPM9C55BE698960</div>
-            </div>
+            WBSPM9C55BE698960
         </div>
 
         <!-- Packages -->
@@ -91,11 +112,67 @@
                 Original Monroney
             </a>
         </div>
-
     </div>
-    <!-- END ROW -->
+    <!-- END ROW 1 -->
 
 </div>
+
+
+<!-- FILTERING SCRIPT -->
+<script>
+(function () {
+    const fieldSelectors = {
+        marketing: '.cell-marketing',
+        model: '.cell-model',
+        color: '.cell-color',
+        interior: '.cell-interior',
+        year: '.cell-year',
+        vin: '.cell-vin',
+        packages: '.cell-packages',
+        price: '.cell-price',
+        dealer: '.cell-dealer'
+    };
+
+    function normalize(text) {
+        return text.toLowerCase().trim();
+    }
+
+    function applyFilters() {
+        const rows = document.querySelectorAll('.table-row');
+        const inputs = document.querySelectorAll('.filter-input');
+
+        const filters = {};
+        inputs.forEach(input => {
+            const field = input.dataset.field;
+            const value = normalize(input.value);
+            if (value) filters[field] = value;
+        });
+
+        rows.forEach(row => {
+            let show = true;
+
+            for (const field in filters) {
+                const cell = row.querySelector(fieldSelectors[field]);
+                const cellText = cell ? normalize(cell.innerText) : "";
+                if (!cellText.includes(filters[field])) {
+                    show = false;
+                    break;
+                }
+            }
+
+            row.style.display = show ? 'flex' : 'none';
+        });
+    }
+
+    document.querySelectorAll('.filter-input').forEach(input => {
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') applyFilters();
+        });
+    });
+
+})();
+</script>
+
 
 </body>
 </html>
