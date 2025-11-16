@@ -40,7 +40,7 @@
     <div class="summary-row">
         <div class="summary-left">
             <input type="checkbox" class="summary-checkbox">
-            <span class="summary-text">351 of 25,672 Vehicle(s)</span>
+            <span class="summary-text"><span id="count"></span> of 25,672 Vehicle(s)</span>
             <span class="badge-m3">M3</span>
         </div>
     </div>
@@ -59,257 +59,119 @@
                 <div class="header-cell header-interior">Int.</div>
                 <div class="header-cell header-year">Yr.</div>
                 <div class="header-cell header-vin">VIN</div>
-                <div class="header-cell header-packages">
-                    Accessories (Individual Paint<br>
-                    Charge - $5,000*)
-                </div>
-                <div class="header-cell header-price">
-                    MSRP (Includes<br>
-                    Gas Guzzler<br>
-                    and Destination<br>
-                    Charges)
-                </div>
-                <div class="header-cell header-dealer">
-                    Dealer Name (PC -<br>
-                    Center | E.D - Euro<br>
-                    Military)
-                </div>
+                <div class="header-cell header-packages">Packages</div>
+                <div class="header-cell header-price">MSRP</div>
+                <div class="header-cell header-dealer">Dealer</div>
             </div>
 
             <!-- FILTER INPUT ROW -->
             <div class="table-header">
                 <div class="header-cell header-status"></div>
                 <div class="header-cell header-checkbox"></div>
-                <div class="header-cell header-marketing">
-                    <input class="filter-input" data-field="marketing">
-                </div>
-                <div class="header-cell header-model">
-                    <input class="filter-input" data-field="model">
-                </div>
-                <div class="header-cell header-color">
-                    <input class="filter-input" data-field="color">
-                </div>
-                <div class="header-cell header-interior">
-                    <input class="filter-input" data-field="interior">
-                </div>
-                <div class="header-cell header-year">
-                    <input class="filter-input" data-field="year">
-                </div>
-                <div class="header-cell header-vin">
-                    <input class="filter-input" data-field="vin">
-                </div>
-                <div class="header-cell header-packages">
-                    <input class="filter-input" data-field="packages">
-                </div>
-                <div class="header-cell header-price">
-                    <input class="filter-input" data-field="price">
-                </div>
-                <div class="header-cell header-dealer">
-                    <input class="filter-input" data-field="dealer">
-                </div>
+                <div class="header-cell header-marketing"><input class="filter-input" data-field="marketing"></div>
+                <div class="header-cell header-model"><input class="filter-input" data-field="model"></div>
+                <div class="header-cell header-color"><input class="filter-input" data-field="color"></div>
+                <div class="header-cell header-interior"><input class="filter-input" data-field="interior"></div>
+                <div class="header-cell header-year"><input class="filter-input" data-field="year"></div>
+                <div class="header-cell header-vin"><input class="filter-input" data-field="vin"></div>
+                <div class="header-cell header-packages"><input class="filter-input" data-field="packages"></div>
+                <div class="header-cell header-price"><input class="filter-input" data-field="price"></div>
+                <div class="header-cell header-dealer"><input class="filter-input" data-field="dealer"></div>
             </div>
 
-            <!-- DATA ROW -->
-            <div class="table-row">
-
-                <!-- Cat / status -->
-                <div class="cell cell-status">
-                    <div class="status-circle">G</div>
-                </div>
-
-                <!-- Checkbox -->
-                <div class="cell cell-checkbox">
-                    <input type="checkbox">
-                </div>
-
-                <!-- Model name + thumbnail -->
-                <div class="cell cell-marketing">
-                    <div class="tooltip">
-                        <div class="marketing-name"
-                             style="background-image:url('https://github.com/Sman19/E90-ext.380x260px/blob/88d5599e9c5abc6da52cfffe7488fc47056127ac/Alpine%20White%20-%20E90%20.png?raw=true');">
-                            <span>M3 Sedan (TOTAL LOSS)</span>
-                        </div>
-                        <div class="tooltiptext tooltip-red-content">
-                            M3 Sedan (TOTAL LOSS)
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Model code -->
-                <div class="cell cell-model">
-                    E90
-                </div>
-
-                <!-- Exterior color -->
-                <div class="cell cell-color">
-                    <div class="tooltip">
-                        <div class="color-cell">
-                            <span class="circle" style="background-color:#ffffff;"></span>
-                            <div class="label">300</div>
-                        </div>
-                        <div class="tooltiptext tooltip-red-content">
-                            Alpine White
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Interior color -->
-                <div class="cell cell-interior">
-                    <div class="tooltip">
-                        <div class="color-cell">
-                            <span class="square"
-                                  style="background-image:url('https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Bamboo%20Beige%20Novillo%20Leather.png');"></span>
-                            <div class="label">NCH3</div>
-                        </div>
-                        <div class="tooltiptext tooltip-red-content">
-                            Beige Novillo Leather
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Year -->
-                <div class="cell cell-year">
-                    2011
-                </div>
-
-                <!-- VIN + copy button -->
-                <div class="cell cell-vin">
-                    <div class="tooltip">
-                        <span class="vin-text" id="vin-1">WBSPM9C55BE698960</span>
-                        <div class="tooltiptext tooltip-red-content">
-                            M3 Sedan 4.0L 8-Cylinder 7-Speed DCT
-                        </div>
-                    </div>
-                    <button class="copy-btn" data-copy-target="vin-1" title="Copy VIN">⧉</button>
-                </div>
-
-                <!-- Packages -->
-                <div class="cell cell-packages">
-                    <div class="tooltip tooltip-packages">
-                        <span class="packages-short">
-                            ZCP ZP2 2MK 403 465 494 609 655 6FL 6NR 752
-                        </span>
-                        <div class="tooltiptext tooltip-packages-content">
-                            <div>MSRP - $55,900.00</div>
-                            <div>ZCP - Competition Package - $2,500.00</div>
-                            <div>ZP2 - Premium Package 2 - $2,500.00 | 4MY - Carbon Leather Interior Trim</div>
-                            <div>2MK - M Double-Clutch Transmission - $2,900.00</div>
-                            <div>403 - Moonroof - $1,050.00</div>
-                            <div>465 - Split-Fold Down Rear Seat - $475.00</div>
-                            <div>494 - Heated Front Seats - $500.00</div>
-                            <div>609 - Navigation System - $2,150.00</div>
-                            <div>655 - Satellite Radio - $350.00</div>
-                            <div>6FL - iPod &amp; USB Adapter - $400.00</div>
-                            <div>6NR - BMW Apps - $250.00</div>
-                            <div>752 - Enhanced Premium Sound - $1,900.00</div>
-                            <div>DC - Destination Charge - $875.00</div>
-                            <div>GZ - Gas Guzzler Tax - $1,300.00</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Price -->
-                <div class="cell cell-price">
-                    73,050.00
-                </div>
-
-                <!-- Dealer -->
-                <div class="cell cell-dealer">
-                    <span class="dealer-name">GLOBAL IMPORTS BMW</span>
-                    <a href="https://raw.githubusercontent.com/Sman19/OriginalMonroney/" target="_blank">
-                        Original Monroney
-                    </a>
-                </div>
-            </div>
-            <!-- END DATA ROW -->
+            <div id="data-rows"></div>
 
         </div>
     </div>
 </div>
 
-<!-- FILTER + COPY SCRIPT -->
+
+<!-- CSV + TABLE GENERATION SCRIPT -->
 <script>
-(function () {
-    const fieldSelectors = {
-        marketing: '.cell-marketing',
-        model: '.cell-model',
-        color: '.cell-color',
-        interior: '.cell-interior',
-        year: '.cell-year',
-        vin: '.cell-vin',
-        packages: '.cell-packages',
-        price: '.cell-price',
-        dealer: '.cell-dealer'
-    };
+async function loadCSV() {
+    const res = await fetch("data.csv");
+    const text = await res.text();
 
-    function normalize(text) {
-        return text.toLowerCase().trim();
-    }
+    const lines = text.trim().split("\n");
+    const headers = lines[0].split(",");
 
-    function applyFilters() {
-        const rows = document.querySelectorAll('.table-row');
-        const inputs = document.querySelectorAll('.filter-input');
-
-        const filters = {};
-        inputs.forEach(input => {
-            const field = input.dataset.field;
-            const value = normalize(input.value || "");
-            if (value) filters[field] = value;
-        });
-
-        rows.forEach(row => {
-            let visible = true;
-
-            for (const field in filters) {
-                const cell = row.querySelector(fieldSelectors[field]);
-                const cellText = cell ? normalize(cell.innerText) : "";
-                if (!cellText.includes(filters[field])) {
-                    visible = false;
-                    break;
-                }
-            }
-
-            row.style.display = visible ? 'flex' : 'none';
-        });
-    }
-
-    // Run filters on Enter
-    document.querySelectorAll('.filter-input').forEach(input => {
-        input.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') {
-                applyFilters();
-            }
-        });
+    const vehicles = lines.slice(1).map(line => {
+        const cols = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g).map(v => v.replace(/^"|"$/g, ""));
+        return {
+            exterior_image: cols[0],
+            marketing_name: cols[1],
+            model: cols[2],
+            chassis: cols[3],
+            ext_code: cols[4],
+            ext_rgb: cols[5],
+            interior_code: cols[6],
+            interior_image: cols[7],
+            year: cols[8],
+            vin: cols[9],
+            packages: cols[10]
+        };
     });
 
-    // Copy VIN buttons
-    function copyText(text) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            return navigator.clipboard.writeText(text);
-        } else {
-            const temp = document.createElement('textarea');
-            temp.value = text;
-            document.body.appendChild(temp);
-            temp.select();
-            document.execCommand('copy');
-            document.body.removeChild(temp);
-            return Promise.resolve();
-        }
-    }
+    document.getElementById("count").innerText = vehicles.length;
 
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const id = btn.dataset.copyTarget;
-            const el = document.getElementById(id);
-            if (!el) return;
-            const text = el.textContent.trim();
-            copyText(text).then(() => {
-                btn.classList.add('copied');
-                setTimeout(() => btn.classList.remove('copied'), 700);
-            });
-        });
+    const container = document.getElementById("data-rows");
+    container.innerHTML = "";
+
+    vehicles.forEach((v, i) => {
+        const row = document.createElement("div");
+        row.className = "table-row";
+
+        row.innerHTML = `
+            <div class="cell cell-status"><div class="status-circle">G</div></div>
+            <div class="cell cell-checkbox"><input type="checkbox"></div>
+
+            <div class="cell cell-marketing">
+                <div class="tooltip">
+                    <div class="marketing-name" style="background-image:url('${v.exterior_image}')">
+                        <span>${v.marketing_name}</span>
+                    </div>
+                    <div class="tooltiptext tooltip-red-content">${v.marketing_name}</div>
+                </div>
+            </div>
+
+            <div class="cell cell-model">${v.chassis}</div>
+
+            <div class="cell cell-color">
+                <div class="tooltip">
+                    <div class="color-cell">
+                        <span class="circle" style="background-color: rgb(${v.ext_rgb});"></span>
+                        <div class="label">${v.ext_code}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cell cell-interior">
+                <div class="tooltip">
+                    <div class="color-cell">
+                        <span class="square" style="background-image:url('${v.interior_image}')"></span>
+                        <div class="label">${v.interior_code}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cell cell-year">${v.year}</div>
+
+            <div class="cell cell-vin">
+                <span class="vin-text">${v.vin}</span>
+            </div>
+
+            <div class="cell cell-packages">${v.packages}</div>
+
+            <div class="cell cell-price"></div>
+
+            <div class="cell cell-dealer"></div>
+        `;
+
+        container.appendChild(row);
     });
-})();
+}
+
+loadCSV();
 </script>
 
 </body>
