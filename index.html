@@ -82,31 +82,31 @@
                 <div class="header-cell header-status"></div>
                 <div class="header-cell header-checkbox"></div>
                 <div class="header-cell header-marketing">
-                    <input class="filter-input" data-field="marketing" placeholder="">
+                    <input class="filter-input" data-field="marketing">
                 </div>
                 <div class="header-cell header-model">
-                    <input class="filter-input" data-field="model" placeholder="">
+                    <input class="filter-input" data-field="model">
                 </div>
                 <div class="header-cell header-color">
-                    <input class="filter-input" data-field="color" placeholder="">
+                    <input class="filter-input" data-field="color">
                 </div>
                 <div class="header-cell header-interior">
-                    <input class="filter-input" data-field="interior" placeholder="">
+                    <input class="filter-input" data-field="interior">
                 </div>
                 <div class="header-cell header-year">
-                    <input class="filter-input" data-field="year" placeholder="">
+                    <input class="filter-input" data-field="year">
                 </div>
                 <div class="header-cell header-vin">
-                    <input class="filter-input" data-field="vin" placeholder="">
+                    <input class="filter-input" data-field="vin">
                 </div>
                 <div class="header-cell header-packages">
-                    <input class="filter-input" data-field="packages" placeholder="">
+                    <input class="filter-input" data-field="packages">
                 </div>
                 <div class="header-cell header-price">
-                    <input class="filter-input" data-field="price" placeholder="">
+                    <input class="filter-input" data-field="price">
                 </div>
                 <div class="header-cell header-dealer">
-                    <input class="filter-input" data-field="dealer" placeholder="">
+                    <input class="filter-input" data-field="dealer">
                 </div>
             </div>
 
@@ -132,7 +132,7 @@ const fieldSelectors = {
 };
 
 function normalize(text) {
-    return (text || "").toLowerCase().trim();
+    return (text || '').toLowerCase().trim();
 }
 
 function applyFilters() {
@@ -152,7 +152,7 @@ function applyFilters() {
             const selector = fieldSelectors[field];
             if (!selector) continue;
             const cell = row.querySelector(selector);
-            const cellText = normalize(cell ? cell.innerText : "");
+            const cellText = normalize(cell ? cell.innerText : '');
             if (!cellText.includes(filters[field])) {
                 visible = false;
                 break;
@@ -163,12 +163,9 @@ function applyFilters() {
 }
 
 function setupFilterInputs() {
-    const inputs = document.querySelectorAll('.filter-input');
-    inputs.forEach(input => {
+    document.querySelectorAll('.filter-input').forEach(input => {
         input.addEventListener('keydown', e => {
-            if (e.key === 'Enter') {
-                applyFilters();
-            }
+            if (e.key === 'Enter') applyFilters();
         });
         input.addEventListener('blur', applyFilters);
     });
@@ -181,6 +178,7 @@ function initCopyButtons() {
             const el = document.getElementById(id);
             if (!el) return;
             const text = el.textContent.trim();
+
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(text).then(() => {
                     btn.classList.add('copied');
@@ -210,15 +208,13 @@ async function loadCSV() {
 
         const csvText = await response.text();
         const lines = csvText.trim().split(/\r?\n/);
-
         if (!lines.length) return;
 
-        // Header row → column names
+        // First line is header → property names
         const headerLine = lines.shift();
         const headers = headerLine.split(',').map(h => h.trim());
 
         const vehicles = lines.map(line => {
-            // CSV row parsing with quotes support
             const cols = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g) || [];
             const obj = {};
             headers.forEach((h, i) => {
@@ -227,7 +223,6 @@ async function loadCSV() {
             return obj;
         });
 
-        // Update vehicle count
         const countEl = document.getElementById('count');
         if (countEl) countEl.textContent = vehicles.length;
 
@@ -238,18 +233,18 @@ async function loadCSV() {
             const row = document.createElement('div');
             row.className = 'table-row';
 
-            const exteriorImage = car.exterior_image || '';
-            const marketingName = car.marketing_name || 'M3 Sedan';
-            const model = car.model || '';       // E90
-            const extCode = car.ext_code || '';  // 300, A75, etc.
-            const extRGB = car.ext_rgb || '';    // "255,255,255"
-            const interiorCode = car.interior_code || '';
-            const interiorImage = car.interior_image || '';
-            const year = car.year || '';
-            const vin = car.vin || '';
-            const packages = car.packages || '';
-            const price = car.price || '';
-            const dealer = car.dealer || '';
+            const exteriorImage  = car.exterior_image  || '';
+            const marketingName  = car.marketing_name  || 'M3 Sedan';
+            const chassis        = car.chassis         || car.model || ''; // ← E90 here
+            const extCode        = car.ext_code        || '';
+            const extRGB         = car.ext_rgb         || '';
+            const interiorCode   = car.interior_code   || '';
+            const interiorImage  = car.interior_image  || '';
+            const year           = car.year            || '';
+            const vin            = car.vin             || '';
+            const packages       = car.packages        || '';
+            const price          = car.price           || '';
+            const dealer         = car.dealer          || '';
 
             row.innerHTML = `
                 <div class="cell cell-status">
@@ -272,7 +267,7 @@ async function loadCSV() {
                 </div>
 
                 <div class="cell cell-model">
-                    ${model}
+                    ${chassis}
                 </div>
 
                 <div class="cell cell-color">
@@ -282,7 +277,7 @@ async function loadCSV() {
                             <div class="label">${extCode}</div>
                         </div>
                         <div class="tooltiptext tooltip-red-content">
-                            ${extCode}
+                            ${extCode} (${extRGB})
                         </div>
                     </div>
                 </div>
@@ -330,7 +325,7 @@ async function loadCSV() {
         });
 
         initCopyButtons();
-        applyFilters();  // respect any filters already typed
+        applyFilters();
 
     } catch (err) {
         console.error('Error loading CSV:', err);
