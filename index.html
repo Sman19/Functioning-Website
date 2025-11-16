@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>index.html</title>
+    <title>E9x M3 Database</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -27,7 +27,7 @@
         </div>
     </header>
 
-    <!-- OWNER / INVENTORY HEADER -->
+    <!-- TITLE ROW -->
     <div class="owner-row">
         <div class="owner-pill"></div>
         <div class="owner-labels">
@@ -36,159 +36,73 @@
         </div>
     </div>
 
-    <!-- SUMMARY ROW -->
+    <!-- SUMMARY -->
     <div class="summary-row">
         <div class="summary-left">
             <input type="checkbox" class="summary-checkbox">
-            <span class="summary-text"><span id="count"></span> of 25,672 Vehicle(s)</span>
+            <span class="summary-text">
+                <span id="count">0</span> of 25,672 Vehicle(s)
+            </span>
             <span class="badge-m3">M3</span>
         </div>
     </div>
 
-    <!-- GRID -->
+    <!-- TABLE -->
     <div class="grid-wrapper">
         <div class="grid-inner">
 
-           <div class="column-labels">
-    <div class="header-cell header-status">Cat.</div>
-    <div class="header-cell header-checkbox"></div>
-    <div class="header-cell header-marketing">Model Name</div>
-    <div class="header-cell header-model">Model</div>
-    <div class="header-cell header-color">Ext.</div>
-    <div class="header-cell header-interior">Int.</div>
-    <div class="header-cell header-year">Yr.</div>
-    <div class="header-cell header-vin">VIN</div>
-    <div class="header-cell header-packages">Packages</div>
-    <div class="header-cell header-price">MSRP</div>
-    <div class="header-cell header-dealer">Dealer</div>
-</div>
+            <!-- HEADERS -->
+            <div class="column-labels">
+                <div class="header-cell header-status">Cat.</div>
+                <div class="header-cell header-checkbox"></div>
+                <div class="header-cell header-marketing">Model Name</div>
+                <div class="header-cell header-model">Model</div>
+                <div class="header-cell header-color">Ext.</div>
+                <div class="header-cell header-interior">Int.</div>
+                <div class="header-cell header-year">Yr.</div>
+                <div class="header-cell header-vin">VIN</div>
+                <div class="header-cell header-packages">Packages</div>
+                <div class="header-cell header-price">MSRP</div>
+                <div class="header-cell header-dealer">Dealer</div>
+            </div>
 
-<div class="table-header">
-    <div class="header-cell header-status"></div>
-    <div class="header-cell header-checkbox"></div>
-    <div class="header-cell header-marketing"><input class="filter-input" data-field="marketing"></div>
-    <div class="header-cell header-model"><input class="filter-input" data-field="model"></div>
-    <div class="header-cell header-color"><input class="filter-input" data-field="color"></div>
-    <div class="header-cell header-interior"><input class="filter-input" data-field="interior"></div>
-    <div class="header-cell header-year"><input class="filter-input" data-field="year"></div>
-    <div class="header-cell header-vin"><input class="filter-input" data-field="vin"></div>
-    <div class="header-cell header-packages"><input class="filter-input" data-field="packages"></div>
-    <div class="header-cell header-price"><input class="filter-input" data-field="price"></div>
-    <div class="header-cell header-dealer"><input class="filter-input" data-field="dealer"></div>
-</div>
+            <!-- FILTER ROW -->
+            <div class="table-header">
+                <div class="header-cell header-status"></div>
+                <div class="header-cell header-checkbox"></div>
+                <div class="header-cell header-marketing"><input class="filter-input" data-field="marketing"></div>
+                <div class="header-cell header-model"><input class="filter-input" data-field="model"></div>
+                <div class="header-cell header-color"><input class="filter-input" data-field="color"></div>
+                <div class="header-cell header-interior"><input class="filter-input" data-field="interior"></div>
+                <div class="header-cell header-year"><input class="filter-input" data-field="year"></div>
+                <div class="header-cell header-vin"><input class="filter-input" data-field="vin"></div>
+                <div class="header-cell header-packages"><input class="filter-input" data-field="packages"></div>
+                <div class="header-cell header-price"><input class="filter-input" data-field="price"></div>
+                <div class="header-cell header-dealer"><input class="filter-input" data-field="dealer"></div>
+            </div>
 
-<!-- Dynamic table rows get injected HERE -->
-<div id="table-rows"></div>
+            <!-- DYNAMIC ROWS -->
+            <div id="table-rows"></div>
 
         </div>
     </div>
 </div>
 
-
-<!-- CSV + TABLE GENERATION SCRIPT -->
-<script>
-async function loadCSV() {
-    const res = await fetch("data.csv");
-    const text = await res.text();
-
-    const lines = text.trim().split("\n");
-    const headers = lines[0].split(",");
-
-    const vehicles = lines.slice(1).map(line => {
-        const cols = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g).map(v => v.replace(/^"|"$/g, ""));
-        return {
-            exterior_image: cols[0],
-            marketing_name: cols[1],
-            model: cols[2],
-            chassis: cols[3],
-            ext_code: cols[4],
-            ext_rgb: cols[5],
-            interior_code: cols[6],
-            interior_image: cols[7],
-            year: cols[8],
-            vin: cols[9],
-            packages: cols[10]
-        };
-    });
-
-    document.getElementById("count").innerText = vehicles.length;
-
-    const container = document.getElementById("data-rows");
-    container.innerHTML = "";
-
-    vehicles.forEach((v, i) => {
-        const row = document.createElement("div");
-        row.className = "table-row";
-
-        row.innerHTML = `
-            <div class="cell cell-status"><div class="status-circle">G</div></div>
-            <div class="cell cell-checkbox"><input type="checkbox"></div>
-
-            <div class="cell cell-marketing">
-                <div class="tooltip">
-                    <div class="marketing-name" style="background-image:url('${v.exterior_image}')">
-                        <span>${v.marketing_name}</span>
-                    </div>
-                    <div class="tooltiptext tooltip-red-content">${v.marketing_name}</div>
-                </div>
-            </div>
-
-            <div class="cell cell-model">${v.chassis}</div>
-
-            <div class="cell cell-color">
-                <div class="tooltip">
-                    <div class="color-cell">
-                        <span class="circle" style="background-color: rgb(${v.ext_rgb});"></span>
-                        <div class="label">${v.ext_code}</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cell cell-interior">
-                <div class="tooltip">
-                    <div class="color-cell">
-                        <span class="square" style="background-image:url('${v.interior_image}')"></span>
-                        <div class="label">${v.interior_code}</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cell cell-year">${v.year}</div>
-
-            <div class="cell cell-vin">
-                <span class="vin-text">${v.vin}</span>
-            </div>
-
-            <div class="cell cell-packages">${v.packages}</div>
-
-            <div class="cell cell-price"></div>
-
-            <div class="cell cell-dealer"></div>
-        `;
-
-        container.appendChild(row);
-    });
-}
-
-loadCSV();
-</script>
-
-</body>
-</html>
-______________________________________________
+<!-- CSV SCRIPT -->
 <script>
 async function loadCSV() {
     const response = await fetch("data.csv");
     const csvText = await response.text();
 
-    const rows = csvText.trim().split("\n").map(r => r.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/));
+    const rows = csvText.trim().split("\n")
+        .map(r => r.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g));
 
-    const headers = rows.shift(); // first row = header names
+    const headers = rows.shift(); 
     const table = document.getElementById("table-rows");
 
-    rows.forEach((row, index) => {
+    rows.forEach((values, index) => {
         const obj = {};
-        headers.forEach((h, i) => obj[h] = row[i]?.replace(/^"|"$/g, "") || "");
+        headers.forEach((h, i) => obj[h] = (values[i] || "").replace(/^"|"$/g, ""));
 
         const html = `
         <div class="table-row">
@@ -207,44 +121,36 @@ async function loadCSV() {
             <div class="cell cell-model">${obj.model}</div>
 
             <div class="cell cell-color">
-                <div class="tooltip">
-                    <div class="color-cell">
-                        <span class="circle" style="background-color: rgb(${obj.ext_rgb});"></span>
-                        <div class="label">${obj.ext_code}</div>
-                    </div>
+                <div class="color-cell">
+                    <span class="circle" style="background-color: rgb(${obj.ext_rgb});"></span>
+                    <div class="label">${obj.ext_code}</div>
                 </div>
             </div>
 
             <div class="cell cell-interior">
-                <div class="tooltip">
-                    <div class="color-cell">
-                        <span class="square" style="background-image:url('${obj.interior_image}')"></span>
-                        <div class="label">${obj.interior_code}</div>
-                    </div>
+                <div class="color-cell">
+                    <span class="square" style="background-image:url('${obj.interior_image}')"></span>
+                    <div class="label">${obj.interior_code}</div>
                 </div>
             </div>
 
             <div class="cell cell-year">${obj.year}</div>
 
             <div class="cell cell-vin">
-                <div class="tooltip">
-                    <span class="vin-text" id="vin-${index}">${obj.vin}</span>
-                    <div class="tooltiptext tooltip-red-content">${obj.vin}</div>
-                </div>
+                <span class="vin-text" id="vin-${index}">${obj.vin}</span>
                 <button class="copy-btn" data-copy-target="vin-${index}">⧉</button>
             </div>
 
             <div class="cell cell-packages">${obj.packages}</div>
-
-            <div class="cell cell-price">${obj.price || ""}</div>
-
-            <div class="cell cell-dealer">${obj.dealer || ""}</div>
+            <div class="cell cell-price"></div>
+            <div class="cell cell-dealer"></div>
         </div>
         `;
 
         table.insertAdjacentHTML("beforeend", html);
     });
 
+    document.getElementById("count").innerText = rows.length;
     initCopyButtons();
 }
 
@@ -263,3 +169,5 @@ function initCopyButtons() {
 loadCSV();
 </script>
 
+</body>
+</html>
