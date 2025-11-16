@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E9x M3 Inventory</title>
-    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E9x M3 U.S | Inventory</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 <div class="app-shell">
 
@@ -37,9 +38,9 @@
     <!-- SUMMARY ROW -->
     <div class="summary-row">
         <div class="summary-left">
-            <input type="checkbox" class="summary-checkbox" />
+            <input type="checkbox" class="summary-checkbox">
             <span class="summary-text">
-                <span id="count">0</span> of 25,672 Vehicle(s)
+                <span id="vehicle-count">0</span> of 25,672 Vehicle(s)
             </span>
             <span class="badge-m3">M3</span>
         </div>
@@ -49,7 +50,7 @@
     <div class="grid-wrapper">
         <div class="grid-inner">
 
-            <!-- COLUMN LABELS -->
+            <!-- COLUMN LABELS (BMW-style) -->
             <div class="column-labels">
                 <div class="header-cell header-status">Cat.</div>
                 <div class="header-cell header-checkbox"></div>
@@ -59,199 +60,214 @@
                 <div class="header-cell header-interior">Int.</div>
                 <div class="header-cell header-year">Yr.</div>
                 <div class="header-cell header-vin">VIN</div>
-                <div class="header-cell header-packages">Packages</div>
-                <div class="header-cell header-price">MSRP</div>
-                <div class="header-cell header-dealer">Dealer</div>
+                <div class="header-cell header-packages">
+                    Accessories (Individual Paint<br>
+                    Charge - $5,000*)
+                </div>
+                <div class="header-cell header-price">
+                    MSRP (Includes<br>
+                    Gas Guzzler<br>
+                    and Destination<br>
+                    Charges)
+                </div>
+                <div class="header-cell header-dealer">
+                    Dealer Name (PC -<br>
+                    Center | E.D - Euro<br>
+                    Military)
+                </div>
             </div>
 
-            <!-- FILTER INPUT ROW -->
+            <!-- FILTER ROW -->
             <div class="table-header">
                 <div class="header-cell header-status"></div>
                 <div class="header-cell header-checkbox"></div>
                 <div class="header-cell header-marketing">
-                    <input class="filter-input" data-field="marketing" />
+                    <input class="filter-input" data-field="marketing">
                 </div>
                 <div class="header-cell header-model">
-                    <input class="filter-input" data-field="model" />
+                    <input class="filter-input" data-field="model">
                 </div>
                 <div class="header-cell header-color">
-                    <input class="filter-input" data-field="color" />
+                    <input class="filter-input" data-field="color">
                 </div>
                 <div class="header-cell header-interior">
-                    <input class="filter-input" data-field="interior" />
+                    <input class="filter-input" data-field="interior">
                 </div>
                 <div class="header-cell header-year">
-                    <input class="filter-input" data-field="year" />
+                    <input class="filter-input" data-field="year">
                 </div>
                 <div class="header-cell header-vin">
-                    <input class="filter-input" data-field="vin" />
+                    <input class="filter-input" data-field="vin">
                 </div>
                 <div class="header-cell header-packages">
-                    <input class="filter-input" data-field="packages" />
+                    <input class="filter-input" data-field="packages">
                 </div>
                 <div class="header-cell header-price">
-                    <input class="filter-input" data-field="price" />
+                    <input class="filter-input" data-field="price">
                 </div>
                 <div class="header-cell header-dealer">
-                    <input class="filter-input" data-field="dealer" />
+                    <input class="filter-input" data-field="dealer">
                 </div>
             </div>
 
-            <!-- DATA ROWS INJECT HERE -->
-            <div id="table-rows"></div>
+            <!-- ALL ROWS FROM data.csv GO HERE -->
+            <div id="data-rows"></div>
 
         </div>
     </div>
 </div>
 
+<!-- CSV + RENDER SCRIPT -->
 <script>
-/*
-Expected CSV header (already in your data.csv):
+/**
+ * Parse one CSV line into an array, handling quoted fields.
+ */
+function parseCsvLine(line) {
+    const result = [];
+    let current = '';
+    let inQuotes = false;
 
-exterior_image,marketing_name,model,chassis,ext_code,ext_rgb,interior_code,interior_image,year,vin,packages
-*/
+    for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
 
-function parseCSVLine(line) {
-    // Handles commas inside quotes
-    const regex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
-    const matches = line.match(regex) || [];
-    return matches.map(v => v.replace(/^"|"$/g, ""));
+        if (ch === '"' ) {
+            // toggle quoted state or handle escaped quote
+            if (inQuotes && line[i + 1] === '"') {
+                current += '"';
+                i++;
+            } else {
+                inQuotes = !inQuotes;
+            }
+        } else if (ch === ',' && !inQuotes) {
+            result.push(current);
+            current = '';
+        } else {
+            current += ch;
+        }
+    }
+    result.push(current);
+    return result;
 }
 
-function normalize(text) {
-    return (text || "").toLowerCase().trim();
-}
-
+/**
+ * Load CSV and build rows that match the BMW-style line.
+ */
 async function loadCSV() {
-    const res = await fetch("data.csv");
+    const res = await fetch('data.csv');
     const text = await res.text();
 
-    const lines = text.trim().split("\n");
-    if (lines.length < 2) return;
+    const lines = text.trim().split('\n');
+    if (!lines.length) return;
 
-    // Map columns by HEADER NAME, not by index
-    const headerNames = parseCSVLine(lines[0]).map(h => h.trim());
+    // Header row → property names
+    const headerCells = parseCsvLine(lines[0]).map(h => h.trim());
     const rows = lines.slice(1);
 
-    const cars = rows.map(line => {
-        const cols = parseCSVLine(line);
-        const rowObj = {};
-        headerNames.forEach((h, i) => {
-            rowObj[h] = cols[i] || "";
+    const data = rows.map(line => {
+        const cells = parseCsvLine(line);
+        const obj = {};
+        headerCells.forEach((h, idx) => {
+            obj[h] = (cells[idx] || '').replace(/^"|"$/g, '');
         });
-
-        return {
-            exterior_image: rowObj.exterior_image || "",
-            marketing_name: rowObj.marketing_name || "",
-            model: rowObj.model || "",
-            chassis: rowObj.chassis || "",
-            ext_code: rowObj.ext_code || "",
-            ext_rgb: rowObj.ext_rgb || "255,255,255",
-            interior_code: rowObj.interior_code || "",
-            interior_image: rowObj.interior_image || "",
-            year: rowObj.year || "",
-            vin: rowObj.vin || "",
-            packages: rowObj.packages || "",
-            price: "",
-            dealer: ""
-        };
+        return obj;
     });
 
-    document.getElementById("count").textContent = cars.length;
+    // Update “x of 25,672 Vehicle(s)”
+    document.getElementById('vehicle-count').textContent = data.length;
 
-    const container = document.getElementById("table-rows");
-    container.innerHTML = "";
+    const container = document.getElementById('data-rows');
+    container.innerHTML = '';
 
-    cars.forEach((car, index) => {
-        const row = document.createElement("div");
-        row.className = "table-row";
+    data.forEach((v, index) => {
+        // fallbacks so we don't show "undefined"
+        const exteriorImage  = v.exterior_image || '';
+        const marketingName  = v.marketing_name || 'M3 Sedan';
+        const model          = v.chassis || v.model || 'E90';
+        const extCode        = v.ext_code || '';
+        const extRgb         = v.ext_rgb || '';
+        const interiorCode   = v.interior_code || '';
+        const interiorImage  = v.interior_image || '';
+        const year           = v.year || '';
+        const vin            = v.vin || '';
+        const packages       = v.packages || '';
+        const price          = v.price || '';
+        const dealer         = v.dealer || '';
+
+        const row = document.createElement('div');
+        row.className = 'table-row';
 
         row.innerHTML = `
-            <!-- Cat -->
+            <!-- Cat / status -->
             <div class="cell cell-status">
                 <div class="status-circle">G</div>
             </div>
 
             <!-- Checkbox -->
             <div class="cell cell-checkbox">
-                <input type="checkbox" />
+                <input type="checkbox">
             </div>
 
-            <!-- Model name + thumbnail -->
+            <!-- Model name + exterior image -->
             <div class="cell cell-marketing">
                 <div class="tooltip">
                     <div class="marketing-name"
-                         style="background-image:url('${car.exterior_image}')">
-                        <span>${car.marketing_name || "M3 Sedan"}</span>
+                         style="background-image:url('${exteriorImage}')">
+                        <span>${marketingName}</span>
                     </div>
                     <div class="tooltiptext tooltip-red-content">
-                        ${car.marketing_name || "M3 Sedan"}
+                        ${marketingName}
                     </div>
                 </div>
             </div>
 
-            <!-- Model / chassis -->
-            <div class="cell cell-model">
-                ${car.chassis || car.model}
-            </div>
+            <!-- Model code -->
+            <div class="cell cell-model">${model}</div>
 
-            <!-- Exterior color (RGB only for the circle, ext_code as text) -->
+            <!-- Exterior swatch (RGB circle + code) -->
             <div class="cell cell-color">
-                <div class="tooltip">
-                    <div class="color-cell">
-                        <span class="circle"
-                              style="background-color: rgb(${car.ext_rgb});"></span>
-                        <div class="label">${car.ext_code}</div>
-                    </div>
-                    <div class="tooltiptext tooltip-red-content">
-                        ${car.ext_code}
-                    </div>
+                <div class="color-cell">
+                    <span class="circle"
+                          style="${extRgb ? `background-color: rgb(${extRgb});` : ''}"></span>
+                    <div class="label">${extCode}</div>
                 </div>
             </div>
 
-            <!-- Interior color (image only, no URL text) -->
+            <!-- Interior swatch (image square + code) -->
             <div class="cell cell-interior">
-                <div class="tooltip">
-                    <div class="color-cell">
-                        <span class="square"
-                              style="background-image:url('${car.interior_image}');"></span>
-                        <div class="label">${car.interior_code}</div>
-                    </div>
-                    <div class="tooltiptext tooltip-red-content">
-                        ${car.interior_code}
-                    </div>
+                <div class="color-cell">
+                    <span class="square"
+                          style="${interiorImage ? `background-image:url('${interiorImage}')` : ''}"></span>
+                    <div class="label">${interiorCode}</div>
                 </div>
             </div>
 
             <!-- Year -->
-            <div class="cell cell-year">
-                ${car.year}
-            </div>
+            <div class="cell cell-year">${year}</div>
 
-            <!-- VIN + copy button -->
+            <!-- VIN pill + copy button -->
             <div class="cell cell-vin">
                 <div class="tooltip">
-                    <span class="vin-text" id="vin-${index}">${car.vin}</span>
+                    <span class="vin-text" id="vin-${index}">${vin}</span>
                     <div class="tooltiptext tooltip-red-content">
-                        ${car.vin}
+                        ${vin}
                     </div>
                 </div>
                 <button class="copy-btn" data-copy-target="vin-${index}">⧉</button>
             </div>
 
-            <!-- Packages (codes only for now) -->
+            <!-- Packages (keep text only for now) -->
             <div class="cell cell-packages">
-                ${car.packages}
+                ${packages}
             </div>
 
-            <!-- MSRP (blank for now) -->
+            <!-- MSRP (empty for now) -->
             <div class="cell cell-price">
-                ${car.price}
+                ${price}
             </div>
 
-            <!-- Dealer (blank for now) -->
+            <!-- Dealer (empty for now) -->
             <div class="cell cell-dealer">
-                ${car.dealer}
+                ${dealer}
             </div>
         `;
 
@@ -262,22 +278,30 @@ async function loadCSV() {
     initCopyButtons();
 }
 
+/**
+ * Filter logic (Enter to apply).
+ */
 function initFilters() {
     const fieldSelectors = {
-        marketing: ".cell-marketing",
-        model: ".cell-model",
-        color: ".cell-color",
-        interior: ".cell-interior",
-        year: ".cell-year",
-        vin: ".cell-vin",
-        packages: ".cell-packages",
-        price: ".cell-price",
-        dealer: ".cell-dealer"
+        marketing: '.cell-marketing',
+        model: '.cell-model',
+        color: '.cell-color',
+        interior: '.cell-interior',
+        year: '.cell-year',
+        vin: '.cell-vin',
+        packages: '.cell-packages',
+        price: '.cell-price',
+        dealer: '.cell-dealer'
     };
 
-    const inputs = document.querySelectorAll(".filter-input");
+    function normalize(text) {
+        return (text || '').toLowerCase().trim();
+    }
 
     function applyFilters() {
+        const rows = document.querySelectorAll('.table-row');
+        const inputs = document.querySelectorAll('.filter-input');
+
         const filters = {};
         inputs.forEach(input => {
             const field = input.dataset.field;
@@ -285,44 +309,48 @@ function initFilters() {
             if (value) filters[field] = value;
         });
 
-        const rows = document.querySelectorAll(".table-row");
         rows.forEach(row => {
             let visible = true;
             for (const field in filters) {
                 const cell = row.querySelector(fieldSelectors[field]);
-                const text = cell ? normalize(cell.innerText) : "";
-                if (!text.includes(filters[field])) {
+                const cellText = normalize(cell ? cell.innerText : '');
+                if (!cellText.includes(filters[field])) {
                     visible = false;
                     break;
                 }
             }
-            row.style.display = visible ? "flex" : "none";
+            row.style.display = visible ? 'flex' : 'none';
         });
     }
 
-    inputs.forEach(input => {
-        input.addEventListener("keydown", e => {
-            if (e.key === "Enter") applyFilters();
+    document.querySelectorAll('.filter-input').forEach(input => {
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter') applyFilters();
         });
     });
 }
 
+/**
+ * Copy-VIN buttons.
+ */
 function initCopyButtons() {
-    document.querySelectorAll(".copy-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
             const id = btn.dataset.copyTarget;
             const el = document.getElementById(id);
             if (!el) return;
-            const txt = el.textContent.trim();
-            navigator.clipboard.writeText(txt).then(() => {
-                btn.classList.add("copied");
-                setTimeout(() => btn.classList.remove("copied"), 600);
+            const text = el.textContent.trim();
+            navigator.clipboard.writeText(text).then(() => {
+                btn.classList.add('copied');
+                setTimeout(() => btn.classList.remove('copied'), 600);
             });
         });
     });
 }
 
-window.addEventListener("DOMContentLoaded", loadCSV);
+// kick everything off
+loadCSV();
 </script>
+
 </body>
 </html>
