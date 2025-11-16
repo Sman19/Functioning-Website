@@ -6,8 +6,8 @@
     <title>index.html</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+
 <div class="app-shell">
 
     <!-- TOP NAV BAR -->
@@ -40,7 +40,7 @@
         <div class="summary-left">
             <input type="checkbox" class="summary-checkbox">
             <span class="summary-text">
-                <span id="vehicle-count">0</span> of 25,672 Vehicle(s)
+                <span id="count">0</span> of 25,672 Vehicle(s)
             </span>
             <span class="badge-m3">M3</span>
         </div>
@@ -50,7 +50,7 @@
     <div class="grid-wrapper">
         <div class="grid-inner">
 
-            <!-- COLUMN LABELS (BMW-style) -->
+            <!-- COLUMN LABELS -->
             <div class="column-labels">
                 <div class="header-cell header-status">Cat.</div>
                 <div class="header-cell header-checkbox"></div>
@@ -77,279 +77,270 @@
                 </div>
             </div>
 
-            <!-- FILTER ROW -->
+            <!-- FILTER INPUT ROW -->
             <div class="table-header">
                 <div class="header-cell header-status"></div>
                 <div class="header-cell header-checkbox"></div>
                 <div class="header-cell header-marketing">
-                    <input class="filter-input" data-field="marketing">
+                    <input class="filter-input" data-field="marketing" placeholder="">
                 </div>
                 <div class="header-cell header-model">
-                    <input class="filter-input" data-field="model">
+                    <input class="filter-input" data-field="model" placeholder="">
                 </div>
                 <div class="header-cell header-color">
-                    <input class="filter-input" data-field="color">
+                    <input class="filter-input" data-field="color" placeholder="">
                 </div>
                 <div class="header-cell header-interior">
-                    <input class="filter-input" data-field="interior">
+                    <input class="filter-input" data-field="interior" placeholder="">
                 </div>
                 <div class="header-cell header-year">
-                    <input class="filter-input" data-field="year">
+                    <input class="filter-input" data-field="year" placeholder="">
                 </div>
                 <div class="header-cell header-vin">
-                    <input class="filter-input" data-field="vin">
+                    <input class="filter-input" data-field="vin" placeholder="">
                 </div>
                 <div class="header-cell header-packages">
-                    <input class="filter-input" data-field="packages">
+                    <input class="filter-input" data-field="packages" placeholder="">
                 </div>
                 <div class="header-cell header-price">
-                    <input class="filter-input" data-field="price">
+                    <input class="filter-input" data-field="price" placeholder="">
                 </div>
                 <div class="header-cell header-dealer">
-                    <input class="filter-input" data-field="dealer">
+                    <input class="filter-input" data-field="dealer" placeholder="">
                 </div>
             </div>
 
-            <!-- ALL ROWS FROM data.csv GO HERE -->
-            <div id="data-rows"></div>
+            <!-- DATA ROWS INJECTED HERE -->
+            <div id="table-rows"></div>
 
         </div>
     </div>
 </div>
 
-<!-- CSV + RENDER SCRIPT -->
+<!-- SCRIPT: LOAD CSV + BUILD TABLE + FILTERS + COPY VIN -->
 <script>
-/**
- * Parse one CSV line into an array, handling quoted fields.
- */
-function parseCsvLine(line) {
-    const result = [];
-    let current = '';
-    let inQuotes = false;
+const fieldSelectors = {
+    marketing: '.cell-marketing',
+    model: '.cell-model',
+    color: '.cell-color',
+    interior: '.cell-interior',
+    year: '.cell-year',
+    vin: '.cell-vin',
+    packages: '.cell-packages',
+    price: '.cell-price',
+    dealer: '.cell-dealer'
+};
 
-    for (let i = 0; i < line.length; i++) {
-        const ch = line[i];
+function normalize(text) {
+    return (text || "").toLowerCase().trim();
+}
 
-        if (ch === '"' ) {
-            // toggle quoted state or handle escaped quote
-            if (inQuotes && line[i + 1] === '"') {
-                current += '"';
-                i++;
-            } else {
-                inQuotes = !inQuotes;
+function applyFilters() {
+    const rows = document.querySelectorAll('#table-rows .table-row');
+    const inputs = document.querySelectorAll('.filter-input');
+
+    const filters = {};
+    inputs.forEach(input => {
+        const field = input.dataset.field;
+        const value = normalize(input.value);
+        if (value) filters[field] = value;
+    });
+
+    rows.forEach(row => {
+        let visible = true;
+        for (const field in filters) {
+            const selector = fieldSelectors[field];
+            if (!selector) continue;
+            const cell = row.querySelector(selector);
+            const cellText = normalize(cell ? cell.innerText : "");
+            if (!cellText.includes(filters[field])) {
+                visible = false;
+                break;
             }
-        } else if (ch === ',' && !inQuotes) {
-            result.push(current);
-            current = '';
-        } else {
-            current += ch;
         }
-    }
-    result.push(current);
-    return result;
+        row.style.display = visible ? 'flex' : 'none';
+    });
 }
 
-/**
- * Load CSV and build rows that match the BMW-style line.
- */
-async function loadCSV() {
-    const res = await fetch('data.csv');
-    const text = await res.text();
-
-    const lines = text.trim().split('\n');
-    if (!lines.length) return;
-
-    // Header row → property names
-    const headerCells = parseCsvLine(lines[0]).map(h => h.trim());
-    const rows = lines.slice(1);
-
-    const data = rows.map(line => {
-        const cells = parseCsvLine(line);
-        const obj = {};
-        headerCells.forEach((h, idx) => {
-            obj[h] = (cells[idx] || '').replace(/^"|"$/g, '');
-        });
-        return obj;
-    });
-
-    // Update “x of 25,672 Vehicle(s)”
-    document.getElementById('vehicle-count').textContent = data.length;
-
-    const container = document.getElementById('data-rows');
-    container.innerHTML = '';
-
-    data.forEach((v, index) => {
-        // fallbacks so we don't show "undefined"
-        const exteriorImage  = v.exterior_image || '';
-        const marketingName  = v.marketing_name || 'M3 Sedan';
-        const model          = v.chassis || v.model || 'E90';
-        const extCode        = v.ext_code || '';
-        const extRgb         = v.ext_rgb || '';
-        const interiorCode   = v.interior_code || '';
-        const interiorImage  = v.interior_image || '';
-        const year           = v.year || '';
-        const vin            = v.vin || '';
-        const packages       = v.packages || '';
-        const price          = v.price || '';
-        const dealer         = v.dealer || '';
-
-        const row = document.createElement('div');
-        row.className = 'table-row';
-
-        row.innerHTML = `
-            <!-- Cat / status -->
-            <div class="cell cell-status">
-                <div class="status-circle">G</div>
-            </div>
-
-            <!-- Checkbox -->
-            <div class="cell cell-checkbox">
-                <input type="checkbox">
-            </div>
-
-            <!-- Model name + exterior image -->
-            <div class="cell cell-marketing">
-                <div class="tooltip">
-                    <div class="marketing-name"
-                         style="background-image:url('${exteriorImage}')">
-                        <span>${marketingName}</span>
-                    </div>
-                    <div class="tooltiptext tooltip-red-content">
-                        ${marketingName}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Model code -->
-            <div class="cell cell-model">${model}</div>
-
-            <!-- Exterior swatch (RGB circle + code) -->
-            <div class="cell cell-color">
-                <div class="color-cell">
-                    <span class="circle"
-                          style="${extRgb ? `background-color: rgb(${extRgb});` : ''}"></span>
-                    <div class="label">${extCode}</div>
-                </div>
-            </div>
-
-            <!-- Interior swatch (image square + code) -->
-            <div class="cell cell-interior">
-                <div class="color-cell">
-                    <span class="square"
-                          style="${interiorImage ? `background-image:url('${interiorImage}')` : ''}"></span>
-                    <div class="label">${interiorCode}</div>
-                </div>
-            </div>
-
-            <!-- Year -->
-            <div class="cell cell-year">${year}</div>
-
-            <!-- VIN pill + copy button -->
-            <div class="cell cell-vin">
-                <div class="tooltip">
-                    <span class="vin-text" id="vin-${index}">${vin}</span>
-                    <div class="tooltiptext tooltip-red-content">
-                        ${vin}
-                    </div>
-                </div>
-                <button class="copy-btn" data-copy-target="vin-${index}">⧉</button>
-            </div>
-
-            <!-- Packages (keep text only for now) -->
-            <div class="cell cell-packages">
-                ${packages}
-            </div>
-
-            <!-- MSRP (empty for now) -->
-            <div class="cell cell-price">
-                ${price}
-            </div>
-
-            <!-- Dealer (empty for now) -->
-            <div class="cell cell-dealer">
-                ${dealer}
-            </div>
-        `;
-
-        container.appendChild(row);
-    });
-
-    initFilters();
-    initCopyButtons();
-}
-
-/**
- * Filter logic (Enter to apply).
- */
-function initFilters() {
-    const fieldSelectors = {
-        marketing: '.cell-marketing',
-        model: '.cell-model',
-        color: '.cell-color',
-        interior: '.cell-interior',
-        year: '.cell-year',
-        vin: '.cell-vin',
-        packages: '.cell-packages',
-        price: '.cell-price',
-        dealer: '.cell-dealer'
-    };
-
-    function normalize(text) {
-        return (text || '').toLowerCase().trim();
-    }
-
-    function applyFilters() {
-        const rows = document.querySelectorAll('.table-row');
-        const inputs = document.querySelectorAll('.filter-input');
-
-        const filters = {};
-        inputs.forEach(input => {
-            const field = input.dataset.field;
-            const value = normalize(input.value);
-            if (value) filters[field] = value;
-        });
-
-        rows.forEach(row => {
-            let visible = true;
-            for (const field in filters) {
-                const cell = row.querySelector(fieldSelectors[field]);
-                const cellText = normalize(cell ? cell.innerText : '');
-                if (!cellText.includes(filters[field])) {
-                    visible = false;
-                    break;
-                }
-            }
-            row.style.display = visible ? 'flex' : 'none';
-        });
-    }
-
-    document.querySelectorAll('.filter-input').forEach(input => {
+function setupFilterInputs() {
+    const inputs = document.querySelectorAll('.filter-input');
+    inputs.forEach(input => {
         input.addEventListener('keydown', e => {
-            if (e.key === 'Enter') applyFilters();
+            if (e.key === 'Enter') {
+                applyFilters();
+            }
         });
+        input.addEventListener('blur', applyFilters);
     });
 }
 
-/**
- * Copy-VIN buttons.
- */
 function initCopyButtons() {
     document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.onclick = () => {
             const id = btn.dataset.copyTarget;
             const el = document.getElementById(id);
             if (!el) return;
             const text = el.textContent.trim();
-            navigator.clipboard.writeText(text).then(() => {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    btn.classList.add('copied');
+                    setTimeout(() => btn.classList.remove('copied'), 700);
+                });
+            } else {
+                const temp = document.createElement('textarea');
+                temp.value = text;
+                document.body.appendChild(temp);
+                temp.select();
+                document.execCommand('copy');
+                document.body.removeChild(temp);
                 btn.classList.add('copied');
-                setTimeout(() => btn.classList.remove('copied'), 600);
-            });
-        });
+                setTimeout(() => btn.classList.remove('copied'), 700);
+            }
+        };
     });
 }
 
-// kick everything off
-loadCSV();
+async function loadCSV() {
+    try {
+        const response = await fetch('data.csv');
+        if (!response.ok) {
+            console.error('Failed to fetch data.csv', response.status, response.statusText);
+            return;
+        }
+
+        const csvText = await response.text();
+        const lines = csvText.trim().split(/\r?\n/);
+
+        if (!lines.length) return;
+
+        // Header row → column names
+        const headerLine = lines.shift();
+        const headers = headerLine.split(',').map(h => h.trim());
+
+        const vehicles = lines.map(line => {
+            // CSV row parsing with quotes support
+            const cols = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g) || [];
+            const obj = {};
+            headers.forEach((h, i) => {
+                obj[h] = (cols[i] || '').replace(/^"|"$/g, '');
+            });
+            return obj;
+        });
+
+        // Update vehicle count
+        const countEl = document.getElementById('count');
+        if (countEl) countEl.textContent = vehicles.length;
+
+        const table = document.getElementById('table-rows');
+        table.innerHTML = '';
+
+        vehicles.forEach((car, index) => {
+            const row = document.createElement('div');
+            row.className = 'table-row';
+
+            const exteriorImage = car.exterior_image || '';
+            const marketingName = car.marketing_name || 'M3 Sedan';
+            const model = car.model || '';       // E90
+            const extCode = car.ext_code || '';  // 300, A75, etc.
+            const extRGB = car.ext_rgb || '';    // "255,255,255"
+            const interiorCode = car.interior_code || '';
+            const interiorImage = car.interior_image || '';
+            const year = car.year || '';
+            const vin = car.vin || '';
+            const packages = car.packages || '';
+            const price = car.price || '';
+            const dealer = car.dealer || '';
+
+            row.innerHTML = `
+                <div class="cell cell-status">
+                    <div class="status-circle">G</div>
+                </div>
+
+                <div class="cell cell-checkbox">
+                    <input type="checkbox">
+                </div>
+
+                <div class="cell cell-marketing">
+                    <div class="tooltip">
+                        <div class="marketing-name" style="background-image:url('${exteriorImage}');">
+                            <span>${marketingName}</span>
+                        </div>
+                        <div class="tooltiptext tooltip-red-content">
+                            ${marketingName}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cell cell-model">
+                    ${model}
+                </div>
+
+                <div class="cell cell-color">
+                    <div class="tooltip">
+                        <div class="color-cell">
+                            <span class="circle" style="background-color: rgb(${extRGB});"></span>
+                            <div class="label">${extCode}</div>
+                        </div>
+                        <div class="tooltiptext tooltip-red-content">
+                            ${extCode}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cell cell-interior">
+                    <div class="tooltip">
+                        <div class="color-cell">
+                            <span class="square" style="background-image:url('${interiorImage}');"></span>
+                            <div class="label">${interiorCode}</div>
+                        </div>
+                        <div class="tooltiptext tooltip-red-content">
+                            ${interiorCode}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cell cell-year">
+                    ${year}
+                </div>
+
+                <div class="cell cell-vin">
+                    <div class="tooltip">
+                        <span class="vin-text" id="vin-${index}">${vin}</span>
+                        <div class="tooltiptext tooltip-red-content">
+                            ${vin}
+                        </div>
+                    </div>
+                    <button class="copy-btn" data-copy-target="vin-${index}" title="Copy VIN">⧉</button>
+                </div>
+
+                <div class="cell cell-packages">
+                    <span class="packages-short">${packages}</span>
+                </div>
+
+                <div class="cell cell-price">
+                    ${price}
+                </div>
+
+                <div class="cell cell-dealer">
+                    ${dealer}
+                </div>
+            `;
+
+            table.appendChild(row);
+        });
+
+        initCopyButtons();
+        applyFilters();  // respect any filters already typed
+
+    } catch (err) {
+        console.error('Error loading CSV:', err);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupFilterInputs();
+    loadCSV();
+});
 </script>
 
 </body>
