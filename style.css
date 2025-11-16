@@ -1,4 +1,5 @@
 /* ---------- BASE ---------- */
+
 body {
     margin: 0;
     padding: 0;
@@ -7,9 +8,12 @@ body {
     font-size: 13px;
 }
 
-.app-shell { width: 100%; }
+.app-shell {
+    width: 100%;
+}
 
 /* ---------- TOP NAV ---------- */
+
 .top-nav {
     height: 64px;
     background: #3b3f46;
@@ -20,107 +24,212 @@ body {
     box-sizing: border-box;
 }
 
-.top-nav-left, .top-nav-center, .top-nav-right {
+.top-nav-left,
+.top-nav-center,
+.top-nav-right {
     display: flex;
     align-items: center;
 }
 
-.top-nav-left { flex: 1; }
-.top-nav-center { flex: 2; justify-content: center; gap: 8px; font-size: 16px; }
-.top-nav-right { flex: 1; justify-content: flex-end; gap: 8px; }
+.top-nav-left {
+    flex: 1;
+}
 
-/* ---------- OWNER / TITLE ---------- */
+.top-nav-center {
+    flex: 2;
+    justify-content: center;
+    gap: 8px;
+    font-size: 16px;
+}
+
+.top-nav-right {
+    flex: 1;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.top-nav-home {
+    font-size: 16px;
+}
+
+.user-icon {
+    font-size: 18px;
+}
+
+.top-nav .divider {
+    opacity: 0.7;
+}
+
+/* ---------- OWNER / TITLE ROW ---------- */
+
 .owner-row {
     display: flex;
     align-items: center;
     padding: 20px 32px 8px;
+    box-sizing: border-box;
     gap: 12px;
 }
-.owner-pill { width: 6px; height: 40px; border-radius: 999px; background: #e11d21; }
-.owner-main { font-size: 22px; }
-.owner-sub { font-size: 22px; color: #e11d21; }
+
+.owner-pill {
+    width: 6px;
+    height: 40px;
+    border-radius: 999px;
+    background: #e11d21;
+}
+
+.owner-labels {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.owner-main {
+    font-size: 22px;
+}
+
+.owner-sub {
+    font-size: 22px;
+    color: #e11d21;
+}
 
 /* ---------- SUMMARY ROW ---------- */
+
 .summary-row {
-    padding: 8px 32px;
+    padding: 8px 32px 8px;
     border-bottom: 1px solid #e5e7eb;
+    box-sizing: border-box;
 }
-.summary-left { display: flex; align-items: center; gap: 10px; }
+
+.summary-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.summary-checkbox {
+    width: 16px;
+    height: 16px;
+}
+
+.summary-text {
+    font-size: 18px;
+}
+
 .badge-m3 {
     background: #007bff;
-    color: #fff;
+    color: #ffffff;
     padding: 2px 10px;
     border-radius: 4px;
+    font-size: 14px;
 }
 
-/* ---------- GRID ---------- */
-.grid-wrapper { width: 100%; overflow-x: auto; }
-.grid-inner { min-width: 1700px; }
+/* ---------- GRID WRAPPER ---------- */
+
+.grid-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.grid-inner {
+    min-width: 1700px;
+}
 
 /* ---------- COLUMN LABELS ---------- */
+
 .column-labels {
     display: flex;
+    align-items: stretch;
     background: #f3f4f6;
     padding: 10px 8px 4px;
+    box-sizing: border-box;
     border-bottom: 1px solid #d1d5db;
 }
+
 .header-cell {
     padding: 0 4px;
     display: flex;
     align-items: center;
+    box-sizing: border-box;
+    flex: 0 0 auto;
     font-weight: 600;
     color: #4b5563;
     font-size: 14px;
-    flex: 0 0 auto;
 }
 
-/* Widths */
-.header-status, .cell-status { width: 40px; }
+/* Column widths */
+
+.header-status,   .cell-status   { width: 40px; }
 .header-checkbox, .cell-checkbox { width: 38px; }
-.header-marketing, .cell-marketing { width: 260px; }
-.header-model, .cell-model { width: 70px; }
-.header-color, .cell-color { width: 80px; }
+.header-marketing,.cell-marketing{ width: 260px; }
+.header-model,    .cell-model    { width: 70px; }
+.header-color,    .cell-color    { width: 80px; }
 .header-interior, .cell-interior { width: 80px; }
-.header-year, .cell-year { width: 50px; }
-.header-vin, .cell-vin { width: 230px; }
+.header-year,     .cell-year     { width: 50px; }
+.header-vin,      .cell-vin      { width: 230px; }
 .header-packages, .cell-packages { width: 420px; }
-.header-price, .cell-price { width: 120px; }
-.header-dealer, .cell-dealer { width: 230px; }
+.header-price,    .cell-price    { width: 120px; }
+.header-dealer,   .cell-dealer   { width: 230px; }
 
 /* ---------- FILTER ROW ---------- */
+
 .table-header {
     display: flex;
+    align-items: center;
     background: #eceff1;
     padding: 4px 8px;
     border-bottom: 1px solid #d1d5db;
 }
+
 .filter-input {
     width: 100%;
     padding: 4px 6px;
     border-radius: 4px;
     border: 1px solid #d1d5db;
+    font-size: 13px;
+    height: 26px;
 }
 
 /* ---------- DATA ROWS ---------- */
+
 .table-row {
     display: flex;
     align-items: center;
+    padding: 6px 8px;
     background: #f3f4f6;
     border-bottom: 1px solid #ddd;
     height: 54px;
-    padding: 6px 8px;
 }
-.table-row:nth-child(even) { background: #eceff1; }
+
+.table-row:nth-child(even) {
+    background: #eceff1;
+}
 
 .cell {
     padding: 0 4px;
     display: flex;
     align-items: center;
-    white-space: nowrap;
     font-size: 14px;
+    line-height: 1;
+    white-space: nowrap;
+    box-sizing: border-box;
+    flex: 0 0 auto;
 }
 
-/* Marketing image */
+/* Status circle */
+
+.status-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    border: 2px solid #16a34a;
+    color: #16a34a;
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+}
+
+/* Marketing image + text spacing */
+
 .marketing-name {
     background-size: contain;
     background-repeat: no-repeat;
@@ -130,45 +239,152 @@ body {
     display: flex;
     align-items: center;
 }
+
 .marketing-name span {
     background: rgba(0,0,0,0.45);
     color: #fff;
     padding: 2px 6px;
     border-radius: 3px;
+    font-size: 14px;
+    line-height: 1.1;
 }
 
-/* Chips */
+/* Color / interior chips */
+
+.color-cell {
+    display: flex;
+    align-items: center;
+}
+
 .circle {
     width: 18px;
     height: 18px;
     border-radius: 999px;
     border: 1px solid #ccc;
 }
+
 .square {
     width: 20px;
     height: 20px;
     border-radius: 4px;
     background-size: cover;
+    background-position: center;
 }
 
-/* VIN */
-.cell-vin { display: flex; gap: 4px; }
+.label {
+    font-size: 13px;
+    color: #444;
+    margin-left: 4px;
+}
+
+/* VIN & price */
+
+.cell-vin {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    gap: 4px;
+}
+
 .vin-text {
     background: #f97316;
     padding: 2px 4px;
     border-radius: 2px;
-    font-family: monospace;
 }
 
+.cell-price {
+    justify-content: flex-end;
+    font-weight: 600;
+}
+
+/* Dealer */
+
+.cell-dealer {
+    flex-direction: column;
+    justify-content: center;
+}
+
+.dealer-name {
+    font-size: 14px;
+}
+
+.cell-dealer a {
+    font-size: 12px;
+    color: #0048d2;
+}
+
+/* Copy button */
+
 .copy-btn {
-    border: 1px solid #bbb;
-    background: #fff;
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
     border-radius: 4px;
     font-size: 11px;
+    padding: 2px 5px;
     cursor: pointer;
 }
+
+.copy-btn:hover {
+    background: #e5e7eb;
+}
+
 .copy-btn.copied {
     background: #16a34a;
-    color: #fff;
     border-color: #16a34a;
+    color: #fff;
+}
+
+/* ---------- TOOLTIP BASE ---------- */
+
+.tooltip {
+    position: relative;
+}
+
+.tooltiptext {
+    display: none;
+    position: absolute;
+    z-index: 20;
+}
+
+.tooltip:hover .tooltiptext {
+    display: block;
+}
+
+/* Red label tooltips */
+
+.tooltip-red-content {
+    background: #b91c1c;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 15px;
+    line-height: 1.35;
+    top: 110%;
+    left: 0;
+    white-space: nowrap;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+}
+
+/* Big red packages tooltip (future use) */
+
+.tooltip-packages-content {
+    background: #b91c1c;
+    color: #fff;
+    padding: 16px 22px;
+    border-radius: 8px;
+    font-size: 15px;
+    line-height: 1.35;
+    top: 110%;
+    left: 0;
+    min-width: 460px;
+    max-width: 520px;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+}
+
+.tooltip-packages-content div + div {
+    margin-top: 3px;
+}
+
+.packages-short {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
