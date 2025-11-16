@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>index.html</title>
+    <title>E9x M3 Inventory</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -79,36 +79,70 @@
                 <div class="header-cell header-dealer"><input class="filter-input" data-field="dealer"></div>
             </div>
 
-            <!-- DYNAMIC ROWS GET INJECTED HERE -->
+            <!-- DYNAMIC ROWS GO HERE -->
             <div id="table-rows"></div>
 
         </div>
     </div>
 </div>
 
-<!-- CSV PARSER + BUILDER -->
 <script>
+/**
+ * Simple CSV line splitter that respects "quoted,values"
+ */
+function splitCSVLine(line) {
+    const matches = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
+    if (!matches) return [];
+    return matches.map(v => v.replace(/^"|"$/g, ""));
+}
+
 async function loadCSV() {
-    const response = await fetch("data.csv");
-    const text = await response.text();
+    const res = await fetch("data.csv");
+    const text = await res.text();
 
-    const rows = text.trim().split("\n");
+    const lines = text.trim().split("\n");
+    if (lines.length <= 1) return;
 
-    const headers = rows[0].split(",");
-    const cars = rows.slice(1).map(r => {
-        const cols = r.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g)
-            .map(v => v.replace(/^"|"$/g, ""));
-        const obj = {};
-        headers.forEach((h, i) => obj[h] = cols[i] || "");
-        return obj;
-    });
+    // first line is header, we don't actually need the names
+    const dataLines = lines.slice(1);
 
+    const cars = dataLines.map(splitCSVLine);
+
+    // Update count
     document.getElementById("count").innerText = cars.length;
 
     const container = document.getElementById("table-rows");
     container.innerHTML = "";
 
-    cars.forEach((car, i) => {
+    cars.forEach((cols, i) => {
+        // Map by **fixed column index** based on your header:
+        // 0: exterior_image
+        // 1: marketing_name
+        // 2: model
+        // 3: chassis   (not used in UI right now)
+        // 4: ext_code
+        // 5: ext_rgb
+        // 6: interior_code
+        // 7: interior_image
+        // 8: year
+        // 9: vin
+        // 10: packages
+        const car = {
+            exterior_image: cols[0] || "",
+            marketing_name: cols[1] || "",
+            model: cols[2] || "",
+            chassis: cols[3] || "",
+            ext_code: cols[4] || "",
+            ext_rgb: cols[5] || "",
+            interior_code: cols[6] || "",
+            interior_image: cols[7] || "",
+            year: cols[8] || "",
+            vin: cols[9] || "",
+            packages: cols[10] || "",
+            price: cols[11] || "",
+            dealer: cols[12] || ""
+        };
+
         const row = document.createElement("div");
         row.className = "table-row";
 
@@ -148,25 +182,97 @@ async function loadCSV() {
             </div>
 
             <div class="cell cell-packages">${car.packages}</div>
-            <div class="cell cell-price">${car.price || ""}</div>
-            <div class="cell cell-dealer">${car.dealer || ""}</div>
+            <div class="cell cell-price">${car.price}</div>
+            <div class="cell cell-dealer">${car.dealer}</div>
         `;
 
         container.appendChild(row);
     });
 
-    initCopy();
+    initCopyButtons();
+    initFilters(cars);
 }
 
-function initCopy() {
+function initCopyButtons() {
     document.querySelectorAll(".copy-btn").forEach(btn => {
         btn.onclick = () => {
             const id = btn.dataset.copyTarget;
-            const text = document.getElementById(id).textContent.trim();
+            const el = document.getElementById(id);
+            if (!el) return;
+            const text = el.textContent.trim();
             navigator.clipboard.writeText(text);
             btn.classList.add("copied");
             setTimeout(() => btn.classList.remove("copied"), 700);
         };
+    });
+}
+
+/* Basic filtering by visible cell text */
+function initFilters() {
+    const inputs = document.querySelectorAll(".filter-input");
+
+    function normalize(t) {
+        return (t || "").toLowerCase().trim();
+    }
+
+    function applyFilters() {
+        const filters = {};
+        inputs.forEach(input => {
+            const field = input.dataset.field;
+            const val = normalize(input.value);
+            if (val) filters[field] = val;
+        });
+
+        const rows = document.querySelectorAll("#table-rows .table-row");
+
+        rows.forEach(row => {
+            let visible = true;
+
+            if (filters.marketing_name) {
+                const text = normalize(row.querySelector(".cell-marketing")?.innerText);
+                if (!text.includes(filters.marketing_name)) visible = false;
+            }
+            if (filters.model) {
+                const text = normalize(row.querySelector(".cell-model")?.innerText);
+                if (!text.includes(filters.model)) visible = false;
+            }
+            if (filters.ext_code) {
+                const text = normalize(row.querySelector(".cell-color .label")?.innerText);
+                if (!text.includes(filters.ext_code)) visible = false;
+            }
+            if (filters.interior_code) {
+                const text = normalize(row.querySelector(".cell-interior .label")?.innerText);
+                if (!text.includes(filters.interior_code)) visible = false;
+            }
+            if (filters.year) {
+                const text = normalize(row.querySelector(".cell-year")?.innerText);
+                if (!text.includes(filters.year)) visible = false;
+            }
+            if (filters.vin) {
+                const text = normalize(row.querySelector(".cell-vin .vin-text")?.innerText);
+                if (!text.includes(filters.vin)) visible = false;
+            }
+            if (filters.packages) {
+                const text = normalize(row.querySelector(".cell-packages")?.innerText);
+                if (!text.includes(filters.packages)) visible = false;
+            }
+            if (filters.price) {
+                const text = normalize(row.querySelector(".cell-price")?.innerText);
+                if (!text.includes(filters.price)) visible = false;
+            }
+            if (filters.dealer) {
+                const text = normalize(row.querySelector(".cell-dealer")?.innerText);
+                if (!text.includes(filters.dealer)) visible = false;
+            }
+
+            row.style.display = visible ? "flex" : "none";
+        });
+    }
+
+    inputs.forEach(input => {
+        input.addEventListener("keydown", e => {
+            if (e.key === "Enter") applyFilters();
+        });
     });
 }
 
