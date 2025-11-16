@@ -131,7 +131,8 @@ body {
 }
 
 .grid-inner {
-    min-width: 1700px;
+    /* a little wider so all columns fit like your reference row */
+    min-width: 1950px;
 }
 
 /* ---------- COLUMN LABELS ---------- */
@@ -156,19 +157,19 @@ body {
     font-size: 14px;
 }
 
-/* Column widths */
+/* Column widths: tuned to match the “TOTAL LOSS” row look */
 
 .header-status,   .cell-status   { width: 40px; }
 .header-checkbox, .cell-checkbox { width: 38px; }
 .header-marketing,.cell-marketing{ width: 260px; }
-.header-model,    .cell-model    { width: 70px; }
-.header-color,    .cell-color    { width: 80px; }
-.header-interior, .cell-interior { width: 80px; }
-.header-year,     .cell-year     { width: 50px; }
-.header-vin,      .cell-vin      { width: 230px; }
-.header-packages, .cell-packages { width: 420px; }
-.header-price,    .cell-price    { width: 120px; }
-.header-dealer,   .cell-dealer   { width: 230px; }
+.header-model,    .cell-model    { width: 70px; }   /* E90 */
+.header-color,    .cell-color    { width: 100px; }  /* circle + 3-digit code */
+.header-interior, .cell-interior { width: 110px; }  /* square + code */
+.header-year,     .cell-year     { width: 60px; }
+.header-vin,      .cell-vin      { width: 260px; }  /* orange VIN pill + copy */
+.header-packages, .cell-packages { width: 520px; }  /* ZCP ZP2 2MK... */
+.header-price,    .cell-price    { width: 140px; }
+.header-dealer,   .cell-dealer   { width: 250px; }
 
 /* ---------- FILTER ROW ---------- */
 
@@ -197,7 +198,7 @@ body {
     padding: 6px 8px;
     background: #f3f4f6;
     border-bottom: 1px solid #ddd;
-    height: 54px;
+    height: 60px; /* slightly taller, closer to your reference row */
 }
 
 .table-row:nth-child(even) {
@@ -235,7 +236,7 @@ body {
     background-repeat: no-repeat;
     background-position: left center;
     height: 46px;
-    padding-left: 100px;
+    padding-left: 100px;  /* space between car image & pill */
     display: flex;
     align-items: center;
 }
@@ -256,16 +257,18 @@ body {
     align-items: center;
 }
 
+/* exterior color circle gets its color from rgb(r,g,b) inline style */
 .circle {
-    width: 18px;
-    height: 18px;
-    border-radius: 999px;
-    border: 1px solid #ccc;
-}
-
-.square {
     width: 20px;
     height: 20px;
+    border-radius: 999px;
+    border: 1px solid #999;
+}
+
+/* interior leather/cloth swatch */
+.square {
+    width: 22px;
+    height: 22px;
     border-radius: 4px;
     background-size: cover;
     background-position: center;
@@ -281,13 +284,18 @@ body {
 
 .cell-vin {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    gap: 4px;
+    gap: 6px;
+    align-items: center;
 }
 
 .vin-text {
+    display: inline-block;
     background: #f97316;
-    padding: 2px 4px;
-    border-radius: 2px;
+    color: #111827;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
 
 .cell-price {
