@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>index.html</title>
+    <title>E9x M3 Inventory</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -97,7 +97,7 @@
                 </div>
             </div>
 
-            <!-- DATA ROWS GET INJECTED HERE -->
+            <!-- DATA ROWS INJECT HERE -->
             <div id="table-rows"></div>
 
         </div>
@@ -129,26 +129,31 @@ async function loadCSV() {
     const lines = text.trim().split("\n");
     if (lines.length < 2) return;
 
-    const header = parseCSVLine(lines[0]); // not strictly needed, but kept
+    // Map columns by HEADER NAME, not by index
+    const headerNames = parseCSVLine(lines[0]).map(h => h.trim());
     const rows = lines.slice(1);
 
     const cars = rows.map(line => {
         const cols = parseCSVLine(line);
+        const rowObj = {};
+        headerNames.forEach((h, i) => {
+            rowObj[h] = cols[i] || "";
+        });
 
         return {
-            exterior_image: cols[0] || "",
-            marketing_name: cols[1] || "",
-            model: cols[2] || "",
-            chassis: cols[3] || "",
-            ext_code: cols[4] || "",
-            ext_rgb: cols[5] || "255,255,255",
-            interior_code: cols[6] || "",
-            interior_image: cols[7] || "",
-            year: cols[8] || "",
-            vin: cols[9] || "",
-            packages: cols[10] || "",
-            price: "",     // reserved for later
-            dealer: ""     // reserved for later
+            exterior_image: rowObj.exterior_image || "",
+            marketing_name: rowObj.marketing_name || "",
+            model: rowObj.model || "",
+            chassis: rowObj.chassis || "",
+            ext_code: rowObj.ext_code || "",
+            ext_rgb: rowObj.ext_rgb || "255,255,255",
+            interior_code: rowObj.interior_code || "",
+            interior_image: rowObj.interior_image || "",
+            year: rowObj.year || "",
+            vin: rowObj.vin || "",
+            packages: rowObj.packages || "",
+            price: "",
+            dealer: ""
         };
     });
 
@@ -162,14 +167,17 @@ async function loadCSV() {
         row.className = "table-row";
 
         row.innerHTML = `
+            <!-- Cat -->
             <div class="cell cell-status">
                 <div class="status-circle">G</div>
             </div>
 
+            <!-- Checkbox -->
             <div class="cell cell-checkbox">
                 <input type="checkbox" />
             </div>
 
+            <!-- Model name + thumbnail -->
             <div class="cell cell-marketing">
                 <div class="tooltip">
                     <div class="marketing-name"
@@ -182,10 +190,12 @@ async function loadCSV() {
                 </div>
             </div>
 
+            <!-- Model / chassis -->
             <div class="cell cell-model">
                 ${car.chassis || car.model}
             </div>
 
+            <!-- Exterior color (RGB only for the circle, ext_code as text) -->
             <div class="cell cell-color">
                 <div class="tooltip">
                     <div class="color-cell">
@@ -199,6 +209,7 @@ async function loadCSV() {
                 </div>
             </div>
 
+            <!-- Interior color (image only, no URL text) -->
             <div class="cell cell-interior">
                 <div class="tooltip">
                     <div class="color-cell">
@@ -212,10 +223,12 @@ async function loadCSV() {
                 </div>
             </div>
 
+            <!-- Year -->
             <div class="cell cell-year">
                 ${car.year}
             </div>
 
+            <!-- VIN + copy button -->
             <div class="cell cell-vin">
                 <div class="tooltip">
                     <span class="vin-text" id="vin-${index}">${car.vin}</span>
@@ -226,14 +239,17 @@ async function loadCSV() {
                 <button class="copy-btn" data-copy-target="vin-${index}">⧉</button>
             </div>
 
+            <!-- Packages (codes only for now) -->
             <div class="cell cell-packages">
                 ${car.packages}
             </div>
 
+            <!-- MSRP (blank for now) -->
             <div class="cell cell-price">
                 ${car.price}
             </div>
 
+            <!-- Dealer (blank for now) -->
             <div class="cell cell-dealer">
                 ${car.dealer}
             </div>
