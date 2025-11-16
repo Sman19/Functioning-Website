@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>index.html</title>
+    <title>E9x M3 Inventory</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <div class="app-shell">
@@ -27,7 +26,7 @@
         </div>
     </header>
 
-    <!-- TITLE ROW -->
+    <!-- OWNER / INVENTORY HEADER -->
     <div class="owner-row">
         <div class="owner-pill"></div>
         <div class="owner-labels">
@@ -36,7 +35,7 @@
         </div>
     </div>
 
-    <!-- SUMMARY -->
+    <!-- SUMMARY ROW -->
     <div class="summary-row">
         <div class="summary-left">
             <input type="checkbox" class="summary-checkbox">
@@ -47,11 +46,11 @@
         </div>
     </div>
 
-    <!-- TABLE -->
+    <!-- GRID -->
     <div class="grid-wrapper">
         <div class="grid-inner">
 
-            <!-- HEADERS -->
+            <!-- COLUMN LABELS -->
             <div class="column-labels">
                 <div class="header-cell header-status">Cat.</div>
                 <div class="header-cell header-checkbox"></div>
@@ -61,112 +60,290 @@
                 <div class="header-cell header-interior">Int.</div>
                 <div class="header-cell header-year">Yr.</div>
                 <div class="header-cell header-vin">VIN</div>
-                <div class="header-cell header-packages">Packages</div>
-                <div class="header-cell header-price">MSRP</div>
-                <div class="header-cell header-dealer">Dealer</div>
+                <div class="header-cell header-packages">
+                    Accessories (Individual Paint<br>
+                    Charge - $5,000*)
+                </div>
+                <div class="header-cell header-price">
+                    MSRP (Includes<br>
+                    Gas Guzzler<br>
+                    and Destination<br>
+                    Charges)
+                </div>
+                <div class="header-cell header-dealer">
+                    Dealer Name (PC -<br>
+                    Center | E.D - Euro<br>
+                    Military)
+                </div>
             </div>
 
-            <!-- FILTER ROW -->
+            <!-- FILTER INPUT ROW -->
             <div class="table-header">
                 <div class="header-cell header-status"></div>
                 <div class="header-cell header-checkbox"></div>
-                <div class="header-cell header-marketing"><input class="filter-input" data-field="marketing"></div>
-                <div class="header-cell header-model"><input class="filter-input" data-field="model"></div>
-                <div class="header-cell header-color"><input class="filter-input" data-field="color"></div>
-                <div class="header-cell header-interior"><input class="filter-input" data-field="interior"></div>
-                <div class="header-cell header-year"><input class="filter-input" data-field="year"></div>
-                <div class="header-cell header-vin"><input class="filter-input" data-field="vin"></div>
-                <div class="header-cell header-packages"><input class="filter-input" data-field="packages"></div>
-                <div class="header-cell header-price"><input class="filter-input" data-field="price"></div>
-                <div class="header-cell header-dealer"><input class="filter-input" data-field="dealer"></div>
+                <div class="header-cell header-marketing">
+                    <input class="filter-input" data-field="marketing">
+                </div>
+                <div class="header-cell header-model">
+                    <input class="filter-input" data-field="model">
+                </div>
+                <div class="header-cell header-color">
+                    <input class="filter-input" data-field="color">
+                </div>
+                <div class="header-cell header-interior">
+                    <input class="filter-input" data-field="interior">
+                </div>
+                <div class="header-cell header-year">
+                    <input class="filter-input" data-field="year">
+                </div>
+                <div class="header-cell header-vin">
+                    <input class="filter-input" data-field="vin">
+                </div>
+                <div class="header-cell header-packages">
+                    <input class="filter-input" data-field="packages">
+                </div>
+                <div class="header-cell header-price">
+                    <input class="filter-input" data-field="price">
+                </div>
+                <div class="header-cell header-dealer">
+                    <input class="filter-input" data-field="dealer">
+                </div>
             </div>
 
-            <!-- DYNAMIC ROWS -->
+            <!-- DYNAMIC ROWS GO HERE -->
             <div id="table-rows"></div>
 
         </div>
     </div>
 </div>
 
-<!-- CSV SCRIPT -->
 <script>
-async function loadCSV() {
-    const response = await fetch("data.csv");
-    const csvText = await response.text();
+(async function () {
+    // --- helper: CSV -> array of values (handles quoted commas) ---
+    function parseCsvLine(line) {
+        if (!line) return [];
+        const regex = /("([^"]|"")*"|[^,]*)(,|$)/g;
+        const out = [];
+        let match;
+        while ((match = regex.exec(line)) !== null) {
+            let value = match[1] || "";
+            value = value.replace(/^"|"$/g, "").replace(/""/g, '"').trim();
+            out.push(value);
+        }
+        return out;
+    }
 
-    const rows = csvText.trim().split("\n")
-        .map(r => r.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g));
+    // --- load CSV ---
+    let text;
+    try {
+        const res = await fetch("data.csv");
+        if (!res.ok) throw new Error("data.csv not found");
+        text = await res.text();
+    } catch (e) {
+        console.error(e);
+        return;
+    }
 
-    const headers = rows.shift(); 
+    const lines = text.trim().split(/\r?\n/);
+    if (lines.length <= 1) return;
+
+    const headerCells = parseCsvLine(lines[0]);
+    const headerIndex = {};
+    headerCells.forEach((h, i) => headerIndex[h.trim()] = i);
+
+    function get(rowArr, name) {
+        const idx = headerIndex[name];
+        return (idx != null && rowArr[idx] != null) ? rowArr[idx] : "";
+    }
+
+    const vehicles = lines.slice(1)
+        .filter(l => l.trim().length > 0)
+        .map(line => {
+            const cols = parseCsvLine(line);
+
+            // support either layout:
+            // exterior_image,marketing_name,model,ext_code,ext_rgb,interior_code,interior_image,year,vin,packages
+            // or with "chassis" mixed in
+            const model = get(cols, "model") || get(cols, "chassis") || "E90";
+            const extCode = get(cols, "ext_code") || get(cols, "chassis") || "";
+            const extRgb = get(cols, "ext_rgb") || "";
+            return {
+                exterior_image: get(cols, "exterior_image"),
+                marketing_name: get(cols, "marketing_name") || "M3 Sedan",
+                model,
+                ext_code: extCode,
+                ext_rgb: extRgb,
+                interior_code: get(cols, "interior_code"),
+                interior_image: get(cols, "interior_image"),
+                year: get(cols, "year"),
+                vin: get(cols, "vin"),
+                packages: get(cols, "packages"),
+                price: get(cols, "price") || "",
+                dealer: get(cols, "dealer") || ""
+            };
+        });
+
+    // update count
+    document.getElementById("count").textContent = vehicles.length;
+
     const table = document.getElementById("table-rows");
+    table.innerHTML = "";
 
-    rows.forEach((values, index) => {
-        const obj = {};
-        headers.forEach((h, i) => obj[h] = (values[i] || "").replace(/^"|"$/g, ""));
+    vehicles.forEach((v, index) => {
+        const extCircleStyle = v.ext_rgb
+            ? `style="background-color: rgb(${v.ext_rgb});"`
+            : "";
+        const intSquareStyle = v.interior_image
+            ? `style="background-image:url('${v.interior_image}')"`
+            : "";
 
-        const html = `
+        const rowHtml = `
         <div class="table-row">
-            <div class="cell cell-status"><div class="status-circle">G</div></div>
-            <div class="cell cell-checkbox"><input type="checkbox"></div>
+            <div class="cell cell-status">
+                <div class="status-circle">G</div>
+            </div>
 
+            <div class="cell cell-checkbox">
+                <input type="checkbox">
+            </div>
+
+            <!-- Model name + image -->
             <div class="cell cell-marketing">
                 <div class="tooltip">
-                    <div class="marketing-name" style="background-image:url('${obj.exterior_image}')">
-                        <span>${obj.marketing_name}</span>
+                    <div class="marketing-name" style="background-image:url('${v.exterior_image}')">
+                        <span>${v.marketing_name}</span>
                     </div>
-                    <div class="tooltiptext tooltip-red-content">${obj.marketing_name}</div>
+                    <div class="tooltiptext tooltip-red-content">
+                        ${v.marketing_name}
+                    </div>
                 </div>
             </div>
 
-            <div class="cell cell-model">${obj.model}</div>
+            <!-- Model code -->
+            <div class="cell cell-model">
+                ${v.model}
+            </div>
 
+            <!-- Exterior color -->
             <div class="cell cell-color">
-                <div class="color-cell">
-                    <span class="circle" style="background-color: rgb(${obj.ext_rgb});"></span>
-                    <div class="label">${obj.ext_code}</div>
+                <div class="tooltip">
+                    <div class="color-cell">
+                        <span class="circle" ${extCircleStyle}></span>
+                        <div class="label">${v.ext_code}</div>
+                    </div>
+                    <div class="tooltiptext tooltip-red-content">
+                        ${v.ext_code}
+                    </div>
                 </div>
             </div>
 
+            <!-- Interior color -->
             <div class="cell cell-interior">
-                <div class="color-cell">
-                    <span class="square" style="background-image:url('${obj.interior_image}')"></span>
-                    <div class="label">${obj.interior_code}</div>
+                <div class="tooltip">
+                    <div class="color-cell">
+                        <span class="square" ${intSquareStyle}></span>
+                        <div class="label">${v.interior_code}</div>
+                    </div>
+                    <div class="tooltiptext tooltip-red-content">
+                        ${v.interior_code}
+                    </div>
                 </div>
             </div>
 
-            <div class="cell cell-year">${obj.year}</div>
+            <!-- Year -->
+            <div class="cell cell-year">
+                ${v.year}
+            </div>
 
+            <!-- VIN with copy button -->
             <div class="cell cell-vin">
-                <span class="vin-text" id="vin-${index}">${obj.vin}</span>
+                <div class="tooltip">
+                    <span class="vin-text" id="vin-${index}">${v.vin}</span>
+                    <div class="tooltiptext tooltip-red-content">
+                        ${v.vin}
+                    </div>
+                </div>
                 <button class="copy-btn" data-copy-target="vin-${index}">⧉</button>
             </div>
 
-            <div class="cell cell-packages">${obj.packages}</div>
-            <div class="cell cell-price"></div>
-            <div class="cell cell-dealer"></div>
+            <!-- Packages -->
+            <div class="cell cell-packages">
+                ${v.packages}
+            </div>
+
+            <!-- Price -->
+            <div class="cell cell-price">
+                ${v.price}
+            </div>
+
+            <!-- Dealer -->
+            <div class="cell cell-dealer">
+                ${v.dealer}
+            </div>
         </div>
         `;
 
-        table.insertAdjacentHTML("beforeend", html);
+        table.insertAdjacentHTML("beforeend", rowHtml);
     });
 
-    document.getElementById("count").innerText = rows.length;
-    initCopyButtons();
-}
-
-function initCopyButtons() {
+    // copy VIN buttons
     document.querySelectorAll(".copy-btn").forEach(btn => {
-        btn.onclick = () => {
+        btn.addEventListener("click", () => {
             const id = btn.dataset.copyTarget;
             const el = document.getElementById(id);
-            navigator.clipboard.writeText(el.textContent.trim());
+            if (!el) return;
+            const text = el.textContent.trim();
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text);
+            }
             btn.classList.add("copied");
             setTimeout(() => btn.classList.remove("copied"), 600);
-        };
+        });
     });
-}
 
-loadCSV();
+    // simple filter logic (press Enter in a filter box)
+    const fieldSelectors = {
+        marketing: ".cell-marketing",
+        model: ".cell-model",
+        color: ".cell-color",
+        interior: ".cell-interior",
+        year: ".cell-year",
+        vin: ".cell-vin",
+        packages: ".cell-packages",
+        price: ".cell-price",
+        dealer: ".cell-dealer"
+    };
+
+    function normalize(t) { return (t || "").toLowerCase().trim(); }
+
+    function applyFilters() {
+        const filters = {};
+        document.querySelectorAll(".filter-input").forEach(input => {
+            const val = normalize(input.value);
+            if (val) filters[input.dataset.field] = val;
+        });
+
+        document.querySelectorAll("#table-rows .table-row").forEach(row => {
+            let visible = true;
+            for (const field in filters) {
+                const cell = row.querySelector(fieldSelectors[field]);
+                const txt = normalize(cell ? cell.innerText : "");
+                if (!txt.includes(filters[field])) {
+                    visible = false;
+                    break;
+                }
+            }
+            row.style.display = visible ? "flex" : "none";
+        });
+    }
+
+    document.querySelectorAll(".filter-input").forEach(input => {
+        input.addEventListener("keydown", e => {
+            if (e.key === "Enter") applyFilters();
+        });
+    });
+
+})();
 </script>
 
 </body>
