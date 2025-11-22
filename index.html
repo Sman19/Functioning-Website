@@ -1060,7 +1060,11 @@ async function loadCSV() {
                             model: cols[5] || '',  // Chassis code (C51, C53, etc)
                             packages: cols[7] || '',
                             msrp: cols[9] || '',
-                            dealer: cols[13] || ''
+                            dealer: cols[13] || '',
+                            details: cols[17] || '',
+                            vspec: cols[18] || '',
+                            sticker: cols[19] || '',
+                            invoice: cols[20] || ''
                         });
                     }
                     break; // Stop processing
@@ -1075,7 +1079,11 @@ async function loadCSV() {
                         model: cols[5] || '',  // Chassis code
                         packages: cols[7] || '',
                         msrp: cols[9] || '',
-                        dealer: cols[13] || ''
+                        dealer: cols[13] || '',
+                        details: cols[17] || '',
+                        vspec: cols[18] || '',
+                        sticker: cols[19] || '',
+                        invoice: cols[20] || ''
                     });
                 }
             }
@@ -1307,6 +1315,10 @@ function openSidePanel(vehicleInfo) {
     panel.dataset.currentInterior = vehicleInfo.interior;
     panel.dataset.currentYear = vehicleInfo.year;
     panel.dataset.currentModel = vehicleInfo.model;
+    panel.dataset.currentDetails = vehicleInfo.details || '';
+    panel.dataset.currentVspec = vehicleInfo.vspec || '';
+    panel.dataset.currentSticker = vehicleInfo.sticker || '';
+    panel.dataset.currentInvoice = vehicleInfo.invoice || '';
     
     // Open panel
     panel.classList.add('open');
@@ -1319,15 +1331,8 @@ function closeSidePanel() {
 
 // Menu action handlers
 function handleDetailsClick() {
-    alert('Details view - Coming soon!');
-}
-
-function handleVSpecClick() {
-    alert('V-Spec - Coming soon!');
-}
-
-function handleStickerClick() {
     const panel = document.getElementById('side-panel');
+    const detailsUrl = panel.dataset.currentDetails;
     const vin = panel.dataset.currentVin;
     
     if (!vin) {
@@ -1335,11 +1340,69 @@ function handleStickerClick() {
         return;
     }
     
-    // For now, show a message. You can add PDF link later
-    alert(`Sticker for VIN: ${vin}\n\nPDF generation coming soon!\nYou can add your GitHub PDF link here.`);
+    if (!detailsUrl || detailsUrl.trim() === '') {
+        alert(`Details PDF not available for VIN: ${vin}`);
+        return;
+    }
     
-    // Example of how to open a PDF (uncomment and add your URL):
-    // window.open('https://your-github-repo.com/pdfs/sticker_' + vin + '.pdf', '_blank');
+    // Convert GitHub URL to raw content URL if needed
+    let pdfUrl = detailsUrl;
+    if (pdfUrl.includes('github.com') && !pdfUrl.includes('/raw/')) {
+        pdfUrl = pdfUrl.replace('/blob/', '/raw/');
+    }
+    
+    // Open PDF in new tab
+    window.open(pdfUrl, '_blank');
+}
+
+function handleVSpecClick() {
+    const panel = document.getElementById('side-panel');
+    const vspecUrl = panel.dataset.currentVspec;
+    const vin = panel.dataset.currentVin;
+    
+    if (!vin) {
+        alert('No vehicle selected');
+        return;
+    }
+    
+    if (!vspecUrl || vspecUrl.trim() === '') {
+        alert(`V-Spec PDF not available for VIN: ${vin}`);
+        return;
+    }
+    
+    // Convert GitHub URL to raw content URL if needed
+    let pdfUrl = vspecUrl;
+    if (pdfUrl.includes('github.com') && !pdfUrl.includes('/raw/')) {
+        pdfUrl = pdfUrl.replace('/blob/', '/raw/');
+    }
+    
+    // Open PDF in new tab
+    window.open(pdfUrl, '_blank');
+}
+
+function handleStickerClick() {
+    const panel = document.getElementById('side-panel');
+    const stickerUrl = panel.dataset.currentSticker;
+    const vin = panel.dataset.currentVin;
+    
+    if (!vin) {
+        alert('No vehicle selected');
+        return;
+    }
+    
+    if (!stickerUrl || stickerUrl.trim() === '') {
+        alert(`Window Sticker PDF not available for VIN: ${vin}`);
+        return;
+    }
+    
+    // Convert GitHub URL to raw content URL if needed
+    let pdfUrl = stickerUrl;
+    if (pdfUrl.includes('github.com') && !pdfUrl.includes('/raw/')) {
+        pdfUrl = pdfUrl.replace('/blob/', '/raw/');
+    }
+    
+    // Open PDF in new tab - browser will display it
+    window.open(pdfUrl, '_blank');
 }
 
 function handleTradeClick() {
@@ -1363,7 +1426,28 @@ function handleIncentivesClick() {
 }
 
 function handleInvoiceClick() {
-    alert('Invoice - Coming soon!');
+    const panel = document.getElementById('side-panel');
+    const invoiceUrl = panel.dataset.currentInvoice;
+    const vin = panel.dataset.currentVin;
+    
+    if (!vin) {
+        alert('No vehicle selected');
+        return;
+    }
+    
+    if (!invoiceUrl || invoiceUrl.trim() === '') {
+        alert(`Invoice PDF not available for VIN: ${vin}`);
+        return;
+    }
+    
+    // Convert GitHub URL to raw content URL if needed
+    let pdfUrl = invoiceUrl;
+    if (pdfUrl.includes('github.com') && !pdfUrl.includes('/raw/')) {
+        pdfUrl = pdfUrl.replace('/blob/', '/raw/');
+    }
+    
+    // Open PDF in new tab - browser will display it
+    window.open(pdfUrl, '_blank');
 }
 
 function handleAdvPriceClick() {
