@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>E9x M3 Database</title>
 
 <!-- AuthPro login protection -->
@@ -46,8 +46,8 @@ body {
     border-radius: 12px;
     max-width: 400px;
     width: 100%;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 
 .login-title {
@@ -84,44 +84,20 @@ body {
     padding: 0 32px;
 }
 
-/* (THE REST OF YOUR CSS BELOW — unchanged) */
-
-.top-nav-left,
-.top-nav-center,
-.top-nav-right {
+.top-nav-left, .top-nav-center, .top-nav-right {
     display: flex;
     align-items: center;
 }
 
-.top-nav-left {
-    flex: 1;
-}
+.top-nav-left { flex: 1; }
+.top-nav-center { flex: 2; justify-content: center; gap: 8px; font-size: 16px; }
+.top-nav-right { flex: 1; justify-content: flex-end; gap: 8px; }
 
-.top-nav-center {
-    flex: 2;
-    justify-content: center;
-    gap: 8px;
-    font-size: 16px;
-}
+.top-nav-home { font-size: 16px; }
+.user-icon { font-size: 18px; }
+.top-nav .divider { opacity: 0.7; }
 
-.top-nav-right {
-    flex: 1;
-    justify-content: flex-end;
-    gap: 8px;
-}
-
-.top-nav-home {
-    font-size: 16px;
-}
-
-.user-icon {
-    font-size: 18px;
-}
-
-.top-nav .divider {
-    opacity: 0.7;
-}
-
+/* OWNER ROW */
 .owner-row {
     display: flex;
     align-items: center;
@@ -136,23 +112,13 @@ body {
     background: #e11d21;
 }
 
-.owner-labels {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
+.owner-labels { display: flex; flex-direction: column; gap: 2px; }
+.owner-main { font-size: 22px; }
+.owner-sub { font-size: 22px; color: #e11d21; }
 
-.owner-main {
-    font-size: 22px;
-}
-
-.owner-sub {
-    font-size: 22px;
-    color: #e11d21;
-}
-
+/* SUMMARY ROW */
 .summary-row {
-    padding: 8px 32px 8px;
+    padding: 8px 32px;
     border-bottom: 1px solid #e5e7eb;
 }
 
@@ -160,15 +126,6 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.summary-checkbox {
-    width: 16px;
-    height: 16px;
-}
-
-.summary-text {
-    font-size: 18px;
 }
 
 .badge-m3 {
@@ -179,15 +136,11 @@ body {
     font-size: 14px;
 }
 
-.grid-wrapper {
-    width: 100%;
-    overflow-x: auto;
-}
+/* GRID */
+.grid-wrapper { width: 100%; overflow-x: auto; }
+.grid-inner { min-width: 1800px; }
 
-.grid-inner {
-    min-width: 1800px;
-}
-
+/* COLUMN LABELS */
 .column-labels {
     display: flex;
     align-items: stretch;
@@ -206,10 +159,8 @@ body {
     font-size: 14px;
 }
 
-/* ALL your column widths, table rows, color circles, tooltips, etc. REMAIN EXACTLY THE SAME */
-
-.header-status { width: 40px; }
 .header-checkbox { width: 40px; }
+.header-status { width: 40px; }
 .header-image { width: 100px; }
 .header-model { width: 60px; }
 .header-exterior { width: 220px; }
@@ -220,34 +171,126 @@ body {
 .header-msrp { width: 120px; }
 .header-dealer { width: 240px; }
 
-/* (CSS continues — ALL ORIGINAL CSS INCLUDED, unchanged) */
+/* FILTER ROW */
+.table-header {
+    display: flex;
+    align-items: center;
+    background: #eceff1;
+    padding: 4px 8px;
+    border-bottom: 1px solid #d1d5db;
+}
 
-/* ... (For brevity in this message, CSS is NOT cut. Continue copying your CSS down to end of style tag.) ... */
+.filter-input {
+    width: 100%;
+    padding: 4px 6px;
+    border-radius: 4px;
+    border: 1px solid #d1d5db;
+    font-size: 13px;
+}
 
+/* TABLE ROWS */
+.table-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 8px;
+    border-bottom: 1px solid #ddd;
+    min-height: 50px;
+    background: #f3f4f6;
+}
+.table-row:nth-child(even) { background: #eceff1; }
+
+.cell { padding: 0 4px; display: flex; align-items: center; flex: 0 0 auto; }
+
+/* COLOR CIRCLE */
+.color-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid #999;
+}
+
+/* INTERIOR IMAGE */
+.interior-square {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid #999;
+}
+
+/* VIN */
+.vin-text {
+    font-family: ui-monospace;
+    font-size: 13px;
+}
+
+/* PACKAGES */
+.packages-short {
+    max-width: 380px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* SELECTION */
+.selection-count {
+    position: fixed;
+    top: 72px;
+    right: 20px;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: none;
+}
+.selection-count.visible { display: block; }
+
+/* SIDE PANEL */
+.side-panel {
+    position: fixed;
+    right: -400px;
+    top: 64px;
+    width: 400px;
+    height: calc(100vh - 64px);
+    background: white;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.15);
+    transition: right 0.3s ease;
+    overflow-y: auto;
+}
+.side-panel.open { right: 0; }
+
+.side-panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    background: white;
+}
+
+/* END CSS */
 </style>
 </head>
 
 <body>
 
-<!-- LOGOUT -->
+<!-- LOGOUT BUTTON -->
 <a href="https://www.authpro.com/auth/sman201/?action=logout" 
    class="logout-link" 
-   id="logout-link">
-   Logout
-</a>
+   id="logout-link">Logout</a>
 
 <!-- LOGIN PORTAL -->
 <div id="login-portal" class="login-wrapper">
     <div class="login-box">
         <div class="login-title">E9x M3 Database</div>
-        <div class="login-subtitle">Please log in to access the inventory.</div>
-        <p style="font-size: 13px; color: #d1d5db; margin-top: 12px;">
-            After successful login you will return here automatically.
+        <div class="login-subtitle">Please log in to continue.</div>
+        <p style="font-size:13px;color:#d1d5db;margin-top:12px;">
+            After login, you will return here automatically.
         </p>
     </div>
 </div>
 
-<!-- MAIN APP (hidden until logged in) -->
+<!-- MAIN APP (hidden until login) -->
 <div class="app-shell" id="app-shell" style="display:none;">
     <!-- TOP NAV BAR -->
     <header class="top-nav">
@@ -265,7 +308,7 @@ body {
         </div>
     </header>
 
-    <!-- OWNER / INVENTORY HEADER -->
+    <!-- OWNER HEADER -->
     <div class="owner-row">
         <div class="owner-pill"></div>
         <div class="owner-labels">
@@ -274,6 +317,7 @@ body {
         </div>
     </div>
 
+    <!-- SUMMARY ROW -->
     <div class="summary-row">
         <div class="summary-left">
             <input type="checkbox" class="summary-checkbox">
@@ -284,10 +328,11 @@ body {
         </div>
     </div>
 
-    <!-- GRID -->
+    <!-- GRID WRAPPER -->
     <div class="grid-wrapper">
         <div class="grid-inner">
 
+            <!-- COLUMN LABELS -->
             <div class="column-labels">
                 <div class="header-cell header-checkbox"></div>
                 <div class="header-cell header-status">Cat.</div>
@@ -297,27 +342,53 @@ body {
                 <div class="header-cell header-interior">Interior</div>
                 <div class="header-cell header-year">Year</div>
                 <div class="header-cell header-vin">VIN</div>
-                <div class="header-cell header-packages">Packages(Destination Charge: $875 | Gas Guzzler Tax: $1,300)</div>
+                <div class="header-cell header-packages">
+                    Packages (Destination Charge: $875 | Gas Guzzler Tax: $1,300)
+                </div>
                 <div class="header-cell header-msrp">MSRP</div>
                 <div class="header-cell header-dealer">Dealer Name</div>
             </div>
 
-            <!-- FILTER row -->
+            <!-- FILTER ROW -->
             <div class="table-header">
                 <div class="header-cell header-checkbox"></div>
                 <div class="header-cell header-status"></div>
                 <div class="header-cell header-image"></div>
-                <div class="header-cell header-model"><input class="filter-input" data-field="model" placeholder="Filter..."></div>
-                <div class="header-cell header-exterior"><input class="filter-input" data-field="exterior" placeholder="Filter..."></div>
-                <div class="header-cell header-interior"><input class="filter-input" data-field="interior" placeholder="Filter..."></div>
-                <div class="header-cell header-year"><input class="filter-input" data-field="year" placeholder="Filter..."></div>
-                <div class="header-cell header-vin"><input class="filter-input" data-field="vin" placeholder="Filter..."></div>
-                <div class="header-cell header-packages"><input class="filter-input" data-field="packages" placeholder="Filter..."></div>
-                <div class="header-cell header-msrp"><input class="filter-input" data-field="msrp" placeholder="Filter..."></div>
-                <div class="header-cell header-dealer"><input class="filter-input" data-field="dealer" placeholder="Filter..."></div>
+
+                <div class="header-cell header-model">
+                    <input class="filter-input" data-field="model" placeholder="Filter...">
+                </div>
+
+                <div class="header-cell header-exterior">
+                    <input class="filter-input" data-field="exterior" placeholder="Filter...">
+                </div>
+
+                <div class="header-cell header-interior">
+                    <input class="filter-input" data-field="interior" placeholder="Filter...">
+                </div>
+
+                <div class="header-cell header-year">
+                    <input class="filter-input" data-field="year" placeholder="Filter...">
+                </div>
+
+                <div class="header-cell header-vin">
+                    <input class="filter-input" data-field="vin" placeholder="Filter...">
+                </div>
+
+                <div class="header-cell header-packages">
+                    <input class="filter-input" data-field="packages" placeholder="Filter...">
+                </div>
+
+                <div class="header-cell header-msrp">
+                    <input class="filter-input" data-field="msrp" placeholder="Filter...">
+                </div>
+
+                <div class="header-cell header-dealer">
+                    <input class="filter-input" data-field="dealer" placeholder="Filter...">
+                </div>
             </div>
 
-            <!-- DATA ROWS -->
+            <!-- TABLE ROWS -->
             <div id="table-rows">
                 <div class="loading">
                     <div class="loading-spinner"></div>
@@ -327,9 +398,10 @@ body {
 
         </div>
     </div>
-</div>
 
-<!-- SELECTION BOX -->
+</div> <!-- END OF APP -->
+
+<!-- SELECTION COUNTER -->
 <div class="selection-count" id="selection-count">
     <span id="selection-count-text">0 Selected</span>
 </div>
@@ -344,419 +416,446 @@ body {
         <div class="side-panel-vehicle-name" id="panel-vehicle-name">-</div>
         <div class="side-panel-vehicle-info" id="panel-vehicle-info">-</div>
     </div>
+
     <div class="side-panel-divider">
         <span class="side-panel-divider-arrow">▼</span>
     </div>
+
     <div class="side-panel-menu">
         <div class="side-panel-menu-grid">
-            <div class="side-panel-menu-item" onclick="handleDetailsClick()"><span class="side-panel-menu-icon">☰</span><span class="side-panel-menu-text">Details</span></div>
-            <div class="side-panel-menu-item" onclick="handleVSpecClick()"><span class="side-panel-menu-icon">📋</span><span class="side-panel-menu-text">V-Spec</span></div>
-            <div class="side-panel-menu-item" onclick="handleStickerClick()"><span class="side-panel-menu-icon">🏷️</span><span class="side-panel-menu-text">Sticker</span></div>
-            <div class="side-panel-menu-item" onclick="handleInvoiceClick()"><span class="side-panel-menu-icon">📄</span><span class="side-panel-menu-text">Invoice</span></div>
+
+            <div class="side-panel-menu-item" onclick="handleDetailsClick()">
+                <span class="side-panel-menu-icon">☰</span>
+                <span class="side-panel-menu-text">Details</span>
+            </div>
+
+            <div class="side-panel-menu-item" onclick="handleVSpecClick()">
+                <span class="side-panel-menu-icon">📋</span>
+                <span class="side-panel-menu-text">V-Spec</span>
+            </div>
+
+            <div class="side-panel-menu-item" onclick="handleStickerClick()">
+                <span class="side-panel-menu-icon">🏷️</span>
+                <span class="side-panel-menu-text">Sticker</span>
+            </div>
+
+            <div class="side-panel-menu-item" onclick="handleInvoiceClick()">
+                <span class="side-panel-menu-icon">📄</span>
+                <span class="side-panel-menu-text">Invoice</span>
+            </div>
+
         </div>
     </div>
 </div>
+<script>
+// ------------------------------
+// AUTH / LOGIN FUNCTIONS
+// ------------------------------
 
-<script>
-<script>
-// ========= REFERENCE DATA STORAGE =========
+// AuthPro sometimes loads variables AFTER the page renders.
+// It also ALWAYS sets the cookie: ap_sman201=xxxxx
+// We detect login using BOTH methods.
+
+// Check cookie (always reliable)
+function isLoggedInByCookie() {
+    return document.cookie.includes("ap_sman201=");
+}
+
+// Check AuthPro JS variables
+function isLoggedInByVariables() {
+    return (typeof auth_res !== "undefined" && auth_res === "ok");
+}
+
+// Combined check
+function userIsLoggedIn() {
+    return isLoggedInByVariables() || isLoggedInByCookie();
+}
+
+// Show/hide login + app
+function toggleAppVisibility() {
+    const loggedIn = userIsLoggedIn();
+    const portal = document.getElementById("login-portal");
+    const app = document.getElementById("app-shell");
+    const logoutBtn = document.getElementById("logout-link");
+
+    if (loggedIn) {
+        portal.style.display = "none";
+        app.style.display = "block";
+        logoutBtn.style.display = "block";
+        return true;
+    } else {
+        portal.style.display = "flex";
+        app.style.display = "none";
+        logoutBtn.style.display = "none";
+        return false;
+    }
+}
+
+// ------------------------------
+// RETRY LOOP (fixes login not loading database immediately)
+// ------------------------------
+
+function startLoginRetryAndInit() {
+    let attempts = 0;
+
+    function check() {
+        attempts++;
+
+        if (toggleAppVisibility()) {
+            // Now safe to load app data
+            setupFilterInputs();
+            loadCSV();
+            return;
+        }
+
+        // Retry for 2 seconds (~12 attempts)
+        if (attempts < 12) {
+            setTimeout(check, 150);
+        }
+    }
+
+    // Begin detection loop
+    setTimeout(check, 150);
+}
+
+document.addEventListener("DOMContentLoaded", startLoginRetryAndInit);
+
+
+
+// ========================================================================
+// ========================  DATA SYSTEM BEGIN  ===========================
+// ========================================================================
+
+// Lookup storage
 const colorLookup = {};
 const interiorLookup = {};
 const packageLookup = {};
 
-// ========= DEFAULT COLOR + INTERIOR DATA (fallbacks) =========
+// DEFAULT COLORS
 const defaultColors = {
-    '300': { rgb: '255, 255, 255', name: 'Alpine White', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/88d5599e9c5abc6da52cfffe7488fc47056127ac/Alpine%20White%20-%20E90%20.png?raw=true' },
-    '668': { rgb: '0, 0, 0', name: 'Jet Black', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/184a291efe57013d3e0607390ab5a2eb6bde6a2b/jet%20black%20-%20E90.png?raw=true' },
-    'A29': { rgb: '205, 223, 244', name: 'Silverstone Metallic II', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/c64544c1c445627d52ef9aebb7b49748cac3807c/Silverstone%20-%20E90.png?raw=true' },
-    'A30': { rgb: '30, 53, 138', name: 'Interlagos Blue Metallic', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/c64544c1c445627d52ef9aebb7b49748cac3807c/Interlogos%20Blue%20Metallic%20-%20E90.png?raw=true' },
-    'A52': { rgb: '102, 109, 127', name: 'Space Gray Metallic', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/9fd94093c78555c094f7399c638ce1736e2e8a88/Space%20Gray%20Metallic%20-%20E90.png?raw=true' },
-    'A73': { rgb: '39, 41, 56', name: 'Jerez Black Metallic', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/c64544c1c445627d52ef9aebb7b49748cac3807c/Jerez%20black%20Metallic%20-%20E90.png?raw=true' },
-    'A75': { rgb: '240, 0, 0', name: 'Melbourne Red Metallic', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/c64544c1c445627d52ef9aebb7b49748cac3807c/Melborune%20Red%20Metallic%20-%20E90.png?raw=true' },
-    '381': { rgb: '17, 93, 176', name: 'Le Mans Blue Metallic', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/c64544c1c445627d52ef9aebb7b49748cac3807c/LE%20Mans%20blue%20metallic%20-%20E90.png?raw=true' }
+    '300': { rgb: '255,255,255', name: 'Alpine White', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/88d5599e9c5abc6da52cfffe7488fc47056127ac/Alpine%20White%20-%20E90%20.png?raw=true' },
+    '668': { rgb: '0,0,0', name: 'Jet Black', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/184a291efe57013d3e0607390ab5a2eb6bde6a2b/jet%20black%20-%20E90.png?raw=true' },
+    'A29': { rgb: '205,223,244', name: 'Silverstone Metallic II', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/c64544c1c445627d52ef9aebb7b49748cac3807c/Silverstone%20-%20E90.png?raw=true' },
+    'A30': { rgb: '30,53,138', name: 'Interlogos Blue Metallic', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/c64544c1c445627d52ef9aebb7b49748cac3807c/Interlogos%20Blue%20Metallic%20-%20E90.png?raw=true' },
+    'A52': { rgb: '102,109,127', name: 'Space Gray Metallic', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/9fd94093c78555c094f7399c638ce1736e2e8a88/Space%20Gray%20Metallic%20-%20E90.png?raw=true' },
+    'A73': { rgb: '39,41,56', name: 'Jerez Black Metallic', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/c64544c1c445627d52ef9aebb7b49748cac3807c/Jerez%20black%20Metallic%20-%20E90.png?raw=true' },
+    'A75': { rgb: '240,0,0', name: 'Melbourne Red Metallic', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/c64544c1c445627d52ef9aebb7b49748cac3807c/Melborune%20Red%20Metallic%20-%20E90.png?raw=true' },
+    '381': { rgb: '17,93,176', name: 'Le Mans Blue Metallic', image: 'https://github.com/Sman19/E90-ext.380x260px/blob/c64544c1c445627d52ef9aebb7b49748cac3807c/LE%20Mans%20blue%20metallic%20-%20E90.png?raw=true' }
 };
 
+// DEFAULT INTERIORS
 const defaultInteriors = {
-    'GEAT': { image: 'https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/ANTHRACITE%20Black%20Cloth.png', description: 'Anthracite/Black Cloth & Leather' },
-    'NCSW': { image: 'https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Black%20Novillo%20Leather.png', description: 'Black Novillo Leather' },
-    'NCH2': { image: 'https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Fox%20Red%20Novillo%20Leather.png', description: 'Fox Red Novillo Leather' },
-    'NCH5': { image: 'https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Two-Tone%20Fox%20Red%3ABlack%3ABlck.png', description: 'Fox Red/Black (Two-Tone)' }
+    'NCSW': { image: 'https://github.com/Sman19/E9x-Interiors/.../Black.png', description: 'Black Novillo Leather' },
+    'NCH2': { image: 'https://github.com/Sman19/E9x-Interiors/.../Fox.png', description: 'Fox Red Novillo Leather' },
+    // Add your existing defaults here...
 };
 
-// ========= FILTER NORMALIZER =========
-function normalize(text) {
-    return (text || "").toLowerCase().trim();
+
+// ===============================
+// FILTER UTILITIES
+// ===============================
+
+function normalize(t) {
+    return (t || "").toLowerCase().trim();
 }
 
-// ========= DEBOUNCE =========
-function debounce(func, wait) {
+function debounce(fn, wait) {
     let t;
-    return function (...args) {
+    return (...args) => {
         clearTimeout(t);
-        t = setTimeout(() => func(...args), wait);
+        t = setTimeout(() => fn(...args), wait);
     };
 }
 
-// ========= CSV LINE PARSER =========
-function parseCSVLine(line) {
-    const result = [];
-    let cur = "";
-    let inQuotes = false;
-
-    for (let i = 0; i < line.length; i++) {
-        const c = line[i];
-
-        if (c === '"') {
-            inQuotes = !inQuotes;
-        } else if (c === "," && !inQuotes) {
-            result.push(cur.trim());
-            cur = "";
-        } else {
-            cur += c;
-        }
-    }
-    result.push(cur.trim());
-    return result;
+function setupFilterInputs() {
+    const debounced = debounce(applyFilters, 200);
+    document.querySelectorAll(".filter-input").forEach(inp => {
+        inp.addEventListener("input", debounced);
+    });
 }
-
-// ========= PAINT / INTERIOR CODE EXTRACTORS =========
-function extractPaintCode(str) {
-    if (!str) return "";
-    const m = str.match(/^([A-Z0-9]+)\s*-/i);
-    if (m) return m[1].toUpperCase();
-
-    if (str.toLowerCase().includes("space gray")) return "A52";
-    if (str.toLowerCase().includes("silverstone")) return "A29";
-
-    return "";
-}
-
-function extractInteriorCode(str) {
-    if (!str) return "";
-    const m = str.match(/^([A-Z0-9]+)\s*-/i);
-    if (m) return m[1].toUpperCase();
-
-    if (str.toLowerCase().includes("fox red")) return "NCH2";
-
-    return "";
-}
-
-// ========= LOAD REFERENCE DATA FROM main.csv =========
-async function loadReferenceData() {
-    try {
-        const res = await fetch("main.csv");
-        const txt = await res.text();
-        const lines = txt.split(/\r?\n/);
-        let section = "";
-
-        for (let i = 0; i < lines.length; i++) {
-            const cols = parseCSVLine(lines[i]);
-            if (cols[2] === "Paint Code") { section = "exterior"; continue; }
-            if (cols[2] === "INTERIOR Code") { section = "interior"; continue; }
-            if (cols[2] === "Packages") { section = "packages"; continue; }
-
-            if (section === "exterior" && cols[2]) {
-                const code = cols[2].toUpperCase();
-                if (code !== "PAINT CODE") {
-                    colorLookup[code] = {
-                        name: cols[3] || "",
-                        rgb: cols[4] || "128,128,128",
-                        image: cols[5] || ""
-                    };
-                }
-            }
-
-            if (section === "interior" && cols[2]) {
-                const code = cols[2].toUpperCase();
-                if (code !== "INTERIOR CODE") {
-                    interiorLookup[code] = {
-                        description: cols[4] || "",
-                        image: cols[5] || ""
-                    };
-                }
-            }
-
-            if (section === "packages" && cols[2]) {
-                const code = cols[2].toUpperCase();
-                if (code !== "PACKAGES") {
-                    packageLookup[code] = (cols[3] || "").replace(/^["'\s]+|["'\s]+$/g, "");
-                }
-            }
-        }
-
-    } catch (e) {
-        console.error("Reference data load error:", e);
-    }
-
-    if (Object.keys(colorLookup).length === 0) Object.assign(colorLookup, defaultColors);
-    if (Object.keys(interiorLookup).length === 0) Object.assign(interiorLookup, defaultInteriors);
-}
-
-// ========= LOAD VEHICLE CSV =========
-async function loadCSV() {
-    await loadReferenceData();
-
-    try {
-        const res = await fetch("main.csv");
-        const txt = await res.text();
-        const lines = txt.split(/\r?\n/);
-
-        const vehicles = [];
-        for (let i = 1; i < lines.length; i++) {
-            const cols = parseCSVLine(lines[i]);
-            const vin = (cols[4] || "").trim();
-            if (!vin || vin.length < 5) continue;
-
-            vehicles.push({
-                exterior: cols[0] || "",
-                interior: cols[2] || "",
-                year: cols[3] || "",
-                vin: vin,
-                model: cols[5] || "",
-                packages: cols[7] || "",
-                msrp: cols[9] || "",
-                dealer: cols[13] || "",
-                details: cols[17] || "",
-                vspec: cols[18] || "",
-                sticker: cols[19] || "",
-                invoice: cols[20] || ""
-            });
-        }
-
-        document.getElementById("count").textContent = vehicles.length;
-        document.getElementById("total-count").textContent = vehicles.length;
-
-        const table = document.getElementById("table-rows");
-        table.innerHTML = "";
-
-        vehicles.forEach((v, index) => {
-            const row = document.createElement("div");
-            row.className = "table-row";
-
-            const paintCode = extractPaintCode(v.exterior);
-            const interiorCode = extractInteriorCode(v.interior);
-
-            const colorData = colorLookup[paintCode] || { rgb: "128,128,128" };
-            const interiorData = interiorLookup[interiorCode] || { image: "", description: "Unknown" };
-
-            let modelType = "E90";
-            if (v.model.startsWith("C6")) modelType = "E92";
-            if (v.model.startsWith("C7")) modelType = "E93";
-
-            const pkgCodes = v.packages ? v.packages.split(/[,\s]+/).filter(Boolean) : [];
-            const pkgShort = pkgCodes.join(", ");
-            const pkgDetails = pkgCodes.map(code => {
-                const upper = code.toUpperCase();
-                return `<div><strong>${upper}:</strong> ${packageLookup[upper] || "Not Found"}</div>`;
-            }).join("");
-
-            row.innerHTML = `
-                <div class="cell cell-checkbox"><input type="checkbox"></div>
-                <div class="cell cell-status"><div class="status-circle">G</div></div>
-                <div class="cell cell-image">
-                    ${colorData.image ?
-                        `<img src="${colorData.image}" class="exterior-thumbnail" />` :
-                        `<div class="exterior-thumbnail"></div>`}
-                </div>
-                <div class="cell cell-model"><span class="model-code">${modelType}</span></div>
-                <div class="cell cell-exterior">
-                    <div class="color-display">
-                        <span class="color-circle" style="background-color: rgb(${colorData.rgb})"></span>
-                        <span>${v.exterior}</span>
-                    </div>
-                </div>
-                <div class="cell cell-interior">
-                    <div class="interior-display">
-                        <span class="interior-square" style="${interiorData.image ? `background-image: url('${interiorData.image}')` : "background:#999"}"></span>
-                        <span>${v.interior}</span>
-                    </div>
-                </div>
-                <div class="cell cell-year">${v.year}</div>
-                <div class="cell cell-vin">
-                    <span class="vin-text" id="vin-${index}">${v.vin}</span>
-                    <button class="copy-btn" data-copy-target="vin-${index}">⧉</button>
-                </div>
-                <div class="cell cell-packages">
-                    <span class="packages-short">${pkgShort || "-"}</span>
-                    ${pkgDetails ? `<div class="tooltiptext tooltip-packages">${pkgDetails}</div>` : ""}
-                </div>
-                <div class="cell cell-msrp">${v.msrp || "-"}</div>
-                <div class="cell cell-dealer">${v.dealer || "-"}</div>
-            `;
-
-            const checkbox = row.querySelector("input[type=checkbox]");
-            checkbox.addEventListener("change", () => handleCheckboxChange(checkbox, v));
-
-            table.appendChild(row);
-        });
-
-    } catch (e) {
-        console.error("Error loading CSV:", e);
-    }
-}
-
-// ========= CHECKBOX / SIDE PANEL =========
-let selectedVehicles = new Set();
-
-function updateSelectionCount() {
-    const count = selectedVehicles.size;
-    const box = document.getElementById("selection-count");
-    const text = document.getElementById("selection-count-text");
-
-    if (count > 0) {
-        text.textContent = `${count} Selected`;
-        box.classList.add("visible");
-    } else {
-        box.classList.remove("visible");
-        closeSidePanel();
-    }
-}
-
-function handleCheckboxChange(cb, v) {
-    const row = cb.closest(".table-row");
-
-    if (cb.checked) {
-        selectedVehicles.add(v.vin);
-        row.classList.add("selected");
-        openSidePanel(v);
-    } else {
-        selectedVehicles.delete(v.vin);
-        row.classList.remove("selected");
-    }
-
-    updateSelectionCount();
-}
-
-function openSidePanel(v) {
-    const panel = document.getElementById("side-panel");
-
-    let modelType = "E90";
-    if (v.model.startsWith("C6")) modelType = "E92";
-    if (v.model.startsWith("C7")) modelType = "E93";
-
-    document.getElementById("panel-vehicle-name").textContent = `${modelType} M3`;
-    document.getElementById("panel-vehicle-info").textContent = v.vin;
-
-    panel.dataset.currentVspec = v.vspec;
-    panel.dataset.currentDetails = v.details;
-    panel.dataset.currentSticker = v.sticker;
-    panel.dataset.currentInvoice = v.invoice;
-    panel.dataset.currentVin = v.vin;
-
-    panel.classList.add("open");
-}
-
-function closeSidePanel() {
-    document.getElementById("side-panel").classList.remove("open");
-}
-
-// ========= SIDE PANEL PDF LINKS =========
-function openPDF(url) {
-    if (!url) return alert("Not available for this vehicle.");
-    if (url.includes("github.com")) url = url.replace("/blob/", "/raw/");
-    window.open(url, "_blank");
-}
-
-function handleDetailsClick() {
-    openPDF(document.getElementById("side-panel").dataset.currentDetails);
-}
-
-function handleVSpecClick() {
-    openPDF(document.getElementById("side-panel").dataset.currentVspec);
-}
-
-function handleStickerClick() {
-    openPDF(document.getElementById("side-panel").dataset.currentSticker);
-}
-
-function handleInvoiceClick() {
-    openPDF(document.getElementById("side-panel").dataset.currentInvoice);
-}
-
-// ========= FILTER SYSTEM =========
-const fieldSelectors = {
-    model: ".cell-model",
-    exterior: ".cell-exterior",
-    interior: ".cell-interior",
-    year: ".cell-year",
-    vin: ".cell-vin",
-    packages: ".cell-packages",
-    msrp: ".cell-msrp",
-    dealer: ".cell-dealer"
-};
 
 function applyFilters() {
     const rows = document.querySelectorAll("#table-rows .table-row");
     const inputs = document.querySelectorAll(".filter-input");
 
     const filters = {};
-    inputs.forEach(i => {
-        const f = i.dataset.field;
-        const v = normalize(i.value);
+    inputs.forEach(inp => {
+        const f = inp.dataset.field;
+        const v = normalize(inp.value);
         if (v) filters[f] = v;
     });
 
-    let visibleCount = 0;
+    let visible = 0;
 
     rows.forEach(row => {
         let show = true;
 
-        for (const f in filters) {
-            const sel = fieldSelectors[f];
-            const cell = row.querySelector(sel);
-            const txt = normalize(cell ? cell.innerText : "");
-            if (!txt.includes(filters[f])) {
+        for (const field in filters) {
+            const cell = row.querySelector(".cell-" + field);
+            const text = normalize(cell ? cell.innerText : "");
+            if (!text.includes(filters[field])) {
                 show = false;
                 break;
             }
         }
 
         row.style.display = show ? "flex" : "none";
-        if (show) visibleCount++;
+        if (show) visible++;
     });
 
-    document.getElementById("count").textContent = visibleCount;
+    document.getElementById("count").textContent = visible;
 }
 
-function setupFilterInputs() {
-    const inputs = document.querySelectorAll(".filter-input");
-    const debounced = debounce(applyFilters, 300);
-    inputs.forEach(i => i.addEventListener("input", debounced));
+
+
+// ===============================
+// CSV PARSER
+// ===============================
+
+function parseCSVLine(line) {
+    const result = [];
+    let current = "";
+    let inQuotes = false;
+
+    for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        const n = line[i + 1];
+
+        if (c === '"') {
+            if (inQuotes && n === '"') {
+                current += '"';
+                i++;
+            } else {
+                inQuotes = !inQuotes;
+            }
+        } else if (c === "," && !inQuotes) {
+            result.push(current.trim());
+            current = "";
+        } else {
+            current += c;
+        }
+    }
+    result.push(current.trim());
+    return result;
 }
 
-// ========= AUTH LOGIN VISIBILITY SYSTEM =========
-function toggleAppVisibility() {
-    const portal = document.getElementById("login-portal");
-    const app = document.getElementById("app-shell");
-    const logout = document.getElementById("logout-link");
 
-    console.log("AuthPro:", { auth_res, login });
 
-    const loggedIn = (typeof auth_res !== "undefined" && auth_res === "ok");
+// ===============================
+// EXTRACTORS
+// ===============================
 
-    if (loggedIn) {
-        portal.style.display = "none";
-        app.style.display = "block";
-        logout.style.display = "inline-flex";
-        return true;
+function extractPaintCode(str) {
+    if (!str) return "";
+    const match = str.match(/^([A-Z0-9]+)\s*-/);
+    return match ? match[1].toUpperCase() : "";
+}
+
+function extractInteriorCode(str) {
+    if (!str) return "";
+    const match = str.match(/^([A-Z0-9]+)\s*-/);
+    return match ? match[1].toUpperCase() : "";
+}
+
+
+
+// ===============================
+// LOAD main.csv (database file)
+// ===============================
+
+async function loadCSV() {
+    console.log("Loading CSV...");
+
+    let response;
+    try {
+        response = await fetch("main.csv");
+    } catch (e) {
+        console.error("Fetch error:", e);
+        return;
+    }
+
+    if (!response.ok) {
+        console.error("CSV HTTP error:", response.status);
+        return;
+    }
+
+    const text = await response.text();
+    const lines = text.trim().split(/\r?\n/);
+    const rows = [];
+
+    // Skip header
+    for (let i = 1; i < lines.length; i++) {
+        const cols = parseCSVLine(lines[i]);
+        if (!cols.length) continue;
+
+        rows.push({
+            exterior: cols[0],
+            interior: cols[2],
+            year: cols[3],
+            vin: cols[4],
+            model: cols[5],
+            packages: cols[7],
+            msrp: cols[9],
+            dealer: cols[13],
+            details: cols[17],
+            vspec: cols[18],
+            sticker: cols[19],
+            invoice: cols[20]
+        });
+    }
+
+    buildTable(rows);
+}
+
+
+
+// ===============================
+// BUILD TABLE
+// ===============================
+
+function buildTable(data) {
+    const table = document.getElementById("table-rows");
+    table.innerHTML = "";
+
+    document.getElementById("count").textContent = data.length;
+    document.getElementById("total-count").textContent = data.length;
+
+    data.forEach((v, idx) => {
+        const row = document.createElement("div");
+        row.className = "table-row";
+
+        const paint = extractPaintCode(v.exterior);
+        const interior = extractInteriorCode(v.interior);
+
+        const colorData = colorLookup[paint] || defaultColors[paint] || {rgb:"128,128,128", image:""};
+        const interiorData = interiorLookup[interior] || defaultInteriors[interior] || {image:""};
+
+        row.innerHTML = `
+            <div class="cell cell-checkbox"><input type="checkbox"></div>
+            <div class="cell cell-status"><div class="status-circle">G</div></div>
+            <div class="cell cell-image">
+                <img src="${colorData.image || ""}" class="exterior-thumbnail">
+            </div>
+            <div class="cell cell-model">${v.model}</div>
+            <div class="cell cell-exterior">${v.exterior}</div>
+            <div class="cell cell-interior">${v.interior}</div>
+            <div class="cell cell-year">${v.year}</div>
+
+            <div class="cell cell-vin">
+                <span class="vin-text">${v.vin}</span>
+            </div>
+
+            <div class="cell cell-packages">${v.packages}</div>
+            <div class="cell cell-msrp">${v.msrp}</div>
+            <div class="cell cell-dealer">${v.dealer}</div>
+        `;
+
+        // Checkbox behavior
+        row.querySelector("input[type=checkbox]").addEventListener("change", function () {
+            handleCheckboxChange(this, v);
+        });
+
+        table.appendChild(row);
+    });
+}
+
+
+
+// ===============================
+// SELECTION LOGIC
+// ===============================
+
+let selectedVehicles = new Set();
+
+function updateSelectionCount() {
+    const count = selectedVehicles.size;
+    const el = document.getElementById("selection-count");
+
+    if (count > 0) {
+        el.classList.add("visible");
+        document.getElementById("selection-count-text").textContent = count + " Selected";
     } else {
-        portal.style.display = "flex";
-        app.style.display = "none";
-        logout.style.display = "none";
-        return false;
+        el.classList.remove("visible");
+        closeSidePanel();
     }
 }
 
-// ========= STARTUP =========
-document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => {
-        const ok = toggleAppVisibility();
-        if (ok) {
-            setupFilterInputs();
-            loadCSV();
-        }
-    }, 250);
-});
+function handleCheckboxChange(checkbox, vehicle) {
+    const row = checkbox.closest(".table-row");
+
+    if (checkbox.checked) {
+        selectedVehicles.add(vehicle.vin);
+        row.classList.add("selected");
+        openSidePanel(vehicle);
+    } else {
+        selectedVehicles.delete(vehicle.vin);
+        row.classList.remove("selected");
+    }
+
+    updateSelectionCount();
+}
+
+
+
+// ===============================
+// SIDE PANEL
+// ===============================
+
+function openSidePanel(v) {
+    const p = document.getElementById("side-panel");
+    document.getElementById("panel-vehicle-name").textContent = v.model + " M3";
+    document.getElementById("panel-vehicle-info").textContent = v.vin;
+
+    p.dataset.details = v.details;
+    p.dataset.vspec = v.vspec;
+    p.dataset.sticker = v.sticker;
+    p.dataset.invoice = v.invoice;
+
+    p.classList.add("open");
+}
+
+function closeSidePanel() {
+    document.getElementById("side-panel").classList.remove("open");
+}
+
+
+
+// ===============================
+// PANEL MENU ACTIONS
+// ===============================
+
+function fixGithubLink(url) {
+    if (!url) return "";
+    if (url.includes("github.com") && !url.includes("/raw/")) {
+        return url.replace("/blob/", "/raw/");
+    }
+    return url;
+}
+
+function handleDetailsClick() {
+    openPDF("details");
+}
+function handleVSpecClick() {
+    openPDF("vspec");
+}
+function handleStickerClick() {
+    openPDF("sticker");
+}
+function handleInvoiceClick() {
+    openPDF("invoice");
+}
+
+function openPDF(type) {
+    const panel = document.getElementById("side-panel");
+    const url = panel.dataset[type];
+
+    if (!url) {
+        alert(type.toUpperCase() + " PDF not available.");
+        return;
+    }
+    window.open(fixGithubLink(url), "_blank");
+}
+
 </script>
 
 </body>
