@@ -466,12 +466,13 @@
             color: #059669;
         }
 
-        /* Packages display */
-        .packages-short {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 380px;
+        /* Packages display (ellipsis version) */
+          .packages-short {
+           white-space: nowrap;        /* keep it on one line */
+           overflow: hidden;           /* hide overflow */
+           text-overflow: ellipsis;    /* show ... */
+           max-width: 360px;           /* stays within the 400px column + padding */
+            display: block;
         }
 
         /* Copy button */
