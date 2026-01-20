@@ -6,6 +6,7 @@
     <title>E9x M3 Database</title>
     
     <!-- ANIMATED FAVICON -->
+    <link id="favicon" rel="icon" type="image/png" href="https://raw.githubusercontent.com/Sman19/Functioning-Website/ac241a80e9369136c2629f014a56dfff7f28fa03/carbo-insta_1080x1080%20Favicon.png">
     <link rel="icon" type="image/gif" href="carboi-favicon.gif">
     <link rel="apple-touch-icon" href="carboi-favicon.gif">
 
@@ -1473,6 +1474,52 @@ document.addEventListener('DOMContentLoaded', () => {
     loadCSV();
 });
 </script>
+
+    <script>
+(() => {
+  const favicon = document.getElementById("favicon");
+  if (!favicon) return;
+
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.src = "https://raw.githubusercontent.com/Sman19/Functioning-Website/ac241a80e9369136c2629f014a56dfff7f28fa03/carbo-insta_1080x1080%20Favicon.png";
+
+  const size = 64;
+  const canvas = document.createElement("canvas");
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
+
+  let t = 0;
+
+  img.onload = () => {
+    setInterval(() => {
+      ctx.clearRect(0, 0, size, size);
+
+      // Pulse scale
+      const scale = 0.92 + 0.04 * Math.sin(t);
+
+      ctx.save();
+      ctx.translate(size / 2, size / 2);
+      ctx.scale(scale, scale);
+      ctx.drawImage(img, -size / 2, -size / 2, size, size);
+      ctx.restore();
+
+      // Subtle BMW-red glow ring
+      const glow = 18 + 4 * Math.sin(t);
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, glow, 0, Math.PI * 2);
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "rgba(220,38,38,0.6)";
+      ctx.stroke();
+
+      favicon.href = canvas.toDataURL("image/png");
+      t += 0.25;
+    }, 120);
+  };
+})();
+</script>
+
 
 </body>
 </html>
