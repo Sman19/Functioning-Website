@@ -1489,57 +1489,45 @@ document.addEventListener('DOMContentLoaded', () => {
   canvas.height = size;
   const ctx = canvas.getContext("2d");
 
-  // 8 premium background colors (BMW / luxury inspired)
-  const bgColors = [
-    "#000000", // Black
-    "#1f2937", // Charcoal
-    "#111827", // Graphite
-    "#0f172a", // Midnight blue
-    "#1e3a8a", // BMW blue
-    "#2563eb", // Electric blue
-    "#7c2d12", // Carbon bronze
-    "#7f1d1d"  // BMW red
-  ];
-
-  let t = 0;
+  let angle = 0;
 
   img.onload = () => {
     setInterval(() => {
       ctx.clearRect(0, 0, size, size);
 
-      // Smooth color rotation
-      const colorIndex = Math.floor((t / 10) % bgColors.length);
-      const bg = bgColors[colorIndex];
-
-      // Draw circular background
+      /* Background circle */
       ctx.beginPath();
       ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
-      ctx.fillStyle = bg;
+      ctx.fillStyle = "#000000";
       ctx.fill();
 
-      // Subtle pulse scale
-      const scale = 0.92 + 0.04 * Math.sin(t);
-
+      /* Draw logo */
       ctx.save();
       ctx.translate(size / 2, size / 2);
-      ctx.scale(scale, scale);
       ctx.drawImage(img, -size / 2, -size / 2, size, size);
       ctx.restore();
 
-      // Soft glow ring
-      const glow = 18 + 4 * Math.sin(t);
+      /* Rotating ring */
+      ctx.save();
+      ctx.translate(size / 2, size / 2);
+      ctx.rotate(angle);
+
       ctx.beginPath();
-      ctx.arc(size / 2, size / 2, glow, 0, Math.PI * 2);
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = "rgba(255,255,255,0.25)";
+      ctx.arc(0, 0, 26, 0, Math.PI * 1.5);
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = "#dc2626"; // BMW red
       ctx.stroke();
 
+      ctx.restore();
+
       favicon.href = canvas.toDataURL("image/png");
-      t += 0.25;
+
+      angle += 0.08;
     }, 120);
   };
 })();
 </script>
+
 
 
 </body>
