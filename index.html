@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E9x M3 Database</title>
     
-    <!-- ANIMATED FAVICON -->
-    <link id="favicon" rel="icon" type="image/png" href="https://raw.githubusercontent.com/Sman19/Functioning-Website/ac241a80e9369136c2629f014a56dfff7f28fa03/carbo-insta_1080x1080%20Favicon.png">
-    <link rel="icon" type="image/gif" href="carboi-favicon.gif">
-    <link rel="apple-touch-icon" href="carboi-favicon.gif">
+   <!-- ANIMATED FAVICON -->
+    <link id="favicon" rel="icon" type="image/png"
+      href="https://raw.githubusercontent.com/Sman19/Functioning-Website/ac241a80e9369136c2629f014a56dfff7f28fa03/carbo-insta_1080x1080%20Favicon.png">
 
     <style>
         * {
@@ -1490,13 +1489,35 @@ document.addEventListener('DOMContentLoaded', () => {
   canvas.height = size;
   const ctx = canvas.getContext("2d");
 
+  // 8 premium background colors (BMW / luxury inspired)
+  const bgColors = [
+    "#000000", // Black
+    "#1f2937", // Charcoal
+    "#111827", // Graphite
+    "#0f172a", // Midnight blue
+    "#1e3a8a", // BMW blue
+    "#2563eb", // Electric blue
+    "#7c2d12", // Carbon bronze
+    "#7f1d1d"  // BMW red
+  ];
+
   let t = 0;
 
   img.onload = () => {
     setInterval(() => {
       ctx.clearRect(0, 0, size, size);
 
-      // Pulse scale
+      // Smooth color rotation
+      const colorIndex = Math.floor((t / 10) % bgColors.length);
+      const bg = bgColors[colorIndex];
+
+      // Draw circular background
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+      ctx.fillStyle = bg;
+      ctx.fill();
+
+      // Subtle pulse scale
       const scale = 0.92 + 0.04 * Math.sin(t);
 
       ctx.save();
@@ -1505,12 +1526,12 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.drawImage(img, -size / 2, -size / 2, size, size);
       ctx.restore();
 
-      // Subtle BMW-red glow ring
+      // Soft glow ring
       const glow = 18 + 4 * Math.sin(t);
       ctx.beginPath();
       ctx.arc(size / 2, size / 2, glow, 0, Math.PI * 2);
       ctx.lineWidth = 3;
-      ctx.strokeStyle = "rgba(220,38,38,0.6)";
+      ctx.strokeStyle = "rgba(255,255,255,0.25)";
       ctx.stroke();
 
       favicon.href = canvas.toDataURL("image/png");
