@@ -1495,39 +1495,43 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(() => {
       ctx.clearRect(0, 0, size, size);
 
-      /* Background circle */
+      /* Black circular background */
       ctx.beginPath();
       ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
       ctx.fillStyle = "#000000";
       ctx.fill();
 
       /* Draw logo */
-      ctx.save();
-      ctx.translate(size / 2, size / 2);
-      ctx.drawImage(img, -size / 2, -size / 2, size, size);
-      ctx.restore();
+      ctx.drawImage(img, 0, 0, size, size);
 
-      /* Rotating ring */
+      /* Rotating neon ring */
       ctx.save();
       ctx.translate(size / 2, size / 2);
       ctx.rotate(angle);
 
+      const gradient = ctx.createConicGradient(0, 0, 0);
+      gradient.addColorStop(0.0, "#ff0000"); // red
+      gradient.addColorStop(0.16, "#ff9900"); // orange
+      gradient.addColorStop(0.33, "#ffff00"); // yellow
+      gradient.addColorStop(0.5, "#00ff00"); // green
+      gradient.addColorStop(0.66, "#00ffff"); // cyan
+      gradient.addColorStop(0.83, "#0066ff"); // blue
+      gradient.addColorStop(1.0, "#ff00ff"); // magenta
+
       ctx.beginPath();
-      ctx.arc(0, 0, 26, 0, Math.PI * 1.5);
+      ctx.arc(0, 0, 26, 0, Math.PI * 2);
       ctx.lineWidth = 4;
-      ctx.strokeStyle = "#dc2626"; // BMW red
+      ctx.strokeStyle = gradient;
       ctx.stroke();
 
       ctx.restore();
 
       favicon.href = canvas.toDataURL("image/png");
-
       angle += 0.08;
     }, 120);
   };
 })();
 </script>
-
 
 
 </body>
