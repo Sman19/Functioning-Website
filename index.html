@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>E9x M3 Database</title>
+
+  <!-- ✅ HIDDEN TAB TITLE (no "2011 E90 M3 Database" in browser tab) -->
+  <title></title>
 
   <!-- ✅ ANIMATED FAVICON (keep as-is) -->
   <link
@@ -952,9 +954,9 @@
           const interiorData = interiorLookup[interiorCode] || { image: "", description: "Unknown" };
           const exteriorImage = colorData.image || "";
 
-          const modelCode = vehicle.model.startsWith("C5") ? "E90" :
-                            vehicle.model.startsWith("C6") ? "E92" :
-                            vehicle.model.startsWith("C7") ? "E93" : "E90";
+          const modelCode = vehicle.model && vehicle.model.startsWith("C5") ? "E90" :
+                            vehicle.model && vehicle.model.startsWith("C6") ? "E92" :
+                            vehicle.model && vehicle.model.startsWith("C7") ? "E93" : "E90";
 
           const packageCodes = vehicle.packages
             ? vehicle.packages.split(/[,\s]+/).map((p) => p.trim()).filter((p) => p.length > 0)
