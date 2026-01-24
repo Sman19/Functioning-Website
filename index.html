@@ -15,13 +15,12 @@
 
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     html, body { height: 100%; }
 
     /* ✅ Keep page background NORMAL (no rainbow) */
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #ffffff;              /* your table app background */
+      background: #ffffff;
       font-size: 13px;
       color: #111827;
     }
@@ -318,11 +317,6 @@
       0%   { background-position: 0% 50%; }
       50%  { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
-    }
-
-    /* ✅ Optional subtle "glow" overlay ONLY while focused (not whole page) */
-    .filter-input:focus {
-      position: relative;
     }
 
     /* Status circle */
@@ -635,7 +629,7 @@
   </div>
 
   <script>
-    // Reference data storage - will be populated from reference.csv
+    // Reference data storage - will be populated from main.csv
     const colorLookup = {};
     const interiorLookup = {};
     const packageLookup = {};
@@ -660,13 +654,22 @@
       "NCH1": { image: "https://github.com/Sman19/E9x-Interiors/raw/05d770702ebbc9b3ba42808fbf60364a59a2bca1/Silver%20Novillo%20Leather.png", description: "Palladium/Silver Novillo Leather" },
       "NDH1": { image: "https://github.com/Sman19/E9x-Interiors/raw/05d770702ebbc9b3ba42808fbf60364a59a2bca1/Silver%20Novillo%20Leather.png", description: "Palladium Extended Novillo Leather" },
       "NCH2": { image: "https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Fox%20Red%20Novillo%20Leather.png", description: "Fox Red Novillo Leather" },
-      "NDH2": { image: "https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Fox%20Red%20Novillo%20Leather.png", description: "Fox Red Extended Novillo Leather" },
+      "NDH2": { image: "https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Fox%20Red%20Extended%20Novillo%20Leather.png", description: "Fox Red Extended Novillo Leather" },
       "NCH3": { image: "https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Bamboo%20Beige%20Novillo%20Leather.png", description: "Bamboo Beige Novillo Leather" },
-      "NDH3": { image: "https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Bamboo%20Beige%20Novillo%20Leather.png", description: "Bamboo Beige Extended Novillo Leather" },
+      "NDH3": { image: "https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Bamboo%20Beige%20Extended%20Novillo%20Leather.png", description: "Bamboo Beige Extended Novillo Leather" },
       "NCH4": { image: "https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Black%3APadllaium%20Two-TOne.png", description: "Palladium/Black Novillo Leather (Two-Tone)" },
       "NCH5": { image: "https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Two-Tone%20Fox%20Red%3ABlack%3ABlck.png", description: "Fox Red/Black Novillo Leather (Two-Tone)" },
       "NDH5": { image: "https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Two-Tone%20Fox%20Red%3ABlack%3ABlck.png", description: "Fox Red/Black Extended Novillo Leather (Two-Tone)" },
       "FOX RED": { image: "https://github.com/Sman19/E9x-Interiors/raw/c588c491108fbe4764bc1ff8c49809dc0991fa32/Fox%20Red%20Novillo%20Leather.png", description: "Fox Red Extended Novillo Leather" }
+    };
+
+    // ✅ Hardcoded fallback packages (so IND works even if your lookup section isn't detected)
+    const defaultPackages = {
+      "IND": "BMW Individual (Paint/Order)",
+      // Add more if you want:
+      // "ZCP": "Competition Package",
+      // "ZCV": "Convenience Package",
+      // "ZCW": "Cold Weather Package",
     };
 
     const fieldSelectors = {
@@ -798,6 +801,10 @@
       return "";
     }
 
+    function looksLikeSectionHeader(text, expected) {
+      return normalize(text) === normalize(expected);
+    }
+
     async function loadReferenceData() {
       try {
         const response = await fetch("main.csv");
@@ -811,12 +818,20 @@
         for (let i = 0; i < lines.length; i++) {
           const cols = parseCSVLine(lines[i]);
 
-          if (cols[2] === "Paint Code" && cols[3] === "Paint Name") { currentSection = "exterior"; continue; }
-          if (cols[2] === "INTERIOR Code") { currentSection = "interior"; continue; }
-          if (cols[2] === "Packages") { currentSection = "packages"; continue; }
+          // Section detection (kept compatible with your original logic)
+          if (cols[2] && cols[3] && looksLikeSectionHeader(cols[2], "Paint Code") && looksLikeSectionHeader(cols[3], "Paint Name")) {
+            currentSection = "exterior"; continue;
+          }
+          if (cols[2] && looksLikeSectionHeader(cols[2], "INTERIOR Code")) {
+            currentSection = "interior"; continue;
+          }
+          if (cols[2] && (looksLikeSectionHeader(cols[2], "Packages") || looksLikeSectionHeader(cols[2], "PACKAGES"))) {
+            currentSection = "packages"; continue;
+          }
 
           if (cols.every((c) => !c || !c.trim())) continue;
 
+          // Exterior reference rows
           if (currentSection === "exterior" && cols[2] && cols[2].trim()) {
             const paintCode = cols[2].trim().toUpperCase();
             if (paintCode && paintCode !== "PAINT CODE") {
@@ -828,6 +843,7 @@
             }
           }
 
+          // Interior reference rows
           if (currentSection === "interior" && cols[2] && cols[2].trim()) {
             const interiorCode = cols[2].trim().toUpperCase();
             if (interiorCode && interiorCode !== "INTERIOR CODE") {
@@ -838,6 +854,7 @@
             }
           }
 
+          // Package reference rows
           if (currentSection === "packages" && cols[2] && cols[2].trim()) {
             const packageCode = cols[2].trim().toUpperCase();
             if (packageCode && packageCode !== "PACKAGES" && cols[3]) {
@@ -852,8 +869,12 @@
         console.error("Error loading reference data from main.csv:", err);
       }
 
+      // Fallbacks
       if (Object.keys(colorLookup).length === 0) Object.assign(colorLookup, defaultColors);
       if (Object.keys(interiorLookup).length === 0) Object.assign(interiorLookup, defaultInteriors);
+
+      // ✅ Key fix for your issue: IND always resolves even if placed in the wrong CSV section
+      Object.assign(packageLookup, defaultPackages, packageLookup);
     }
 
     async function loadCSV() {
@@ -875,6 +896,7 @@
           const cols = parseCSVLine(lines[i]);
           const vin = cols[4] ? cols[4].trim() : "";
 
+          // stop marker logic (your original)
           if (vin && vin.endsWith("9194")) {
             if (vin.length > 5) {
               vehicles.push({
@@ -945,8 +967,8 @@
               const codeUpper = code.trim().toUpperCase();
               const pkg = packageLookup[codeUpper];
               return pkg
-                ? `<div><strong>${code}:</strong> ${pkg}</div>`
-                : `<div><strong>${code}</strong> (not found in lookup)</div>`;
+                ? `<div><strong>${codeUpper}:</strong> ${pkg}</div>`
+                : `<div><strong>${codeUpper}</strong> (not found in lookup)</div>`;
             })
             .join("");
 
