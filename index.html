@@ -792,16 +792,29 @@
       return "";
     }
 
-    function extractInteriorCode(interiorStr) {
-      if (!interiorStr) return "";
-      interiorStr = interiorStr.trim();
+      function extractInteriorCode(interiorStr) {
+    if (!interiorStr) return "";
 
-      const codeMatch = interiorStr.match(/^([A-Z0-9]+)\s*-/i);
-      if (codeMatch) return codeMatch[1].trim().toUpperCase();
+    // normalize whitespace (tabs, extra spaces, CRLF)
+    const raw = interiorStr.replace(/\s+/g, " ").trim();
+    const upper = raw.toUpperCase();
 
-      if (interiorStr.toLowerCase().includes("fox red") && interiorStr.toLowerCase().includes("extended")) return "NDH2";
-      if (interiorStr.toLowerCase().includes("fox red")) return "NCH2";
-      if (interiorStr.toLowerCase().includes("rust brown") && interiorStr.toLowerCase().includes("extended")) return "ZAP2";
+    // 1) If it's already just a code like "ZAP2"
+    if (/^[A-Z0-9]{3,6}$/.test(upper)) return upper;
+
+    // 2) If it starts with "CODE - description"
+    const dashMatch = raw.match(/^([A-Z0-9]+)\s*-\s*/i);
+    if (dashMatch) return dashMatch[1].trim().toUpperCase();
+
+    // 3) If it starts with "CODE description"
+    const spaceMatch = raw.match(/^([A-Z0-9]{3,6})\s+/i);
+    if (spaceMatch) return spaceMatch[1].trim().toUpperCase();
+
+    // 4) Keyword fallbacks
+    const low = raw.toLowerCase();
+    if (low.includes("fox red") && low.includes("extended")) return "NDH2";
+    if (low.includes("fox red")) return "NCH2";
+    if (low.includes("rust brown")) return "ZAP2";
 
       return "";
     }
